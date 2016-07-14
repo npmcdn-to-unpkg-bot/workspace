@@ -1,12 +1,16 @@
 -- VERSION_4
 -- START DISKCACHE_2
 C:\Users\tsukik\workspace\.metadata\.plugins\org.eclipse.core.resources\.projects\practice\com.python.pydev.analysis\v2_indexcache
+practiceFile2|1468424115523079000|C:\Users\tsukik\workspace\practice\practiceFile2.py
+practiceFile|1468390203648608000|C:\Users\tsukik\workspace\practice\practiceFile.py
 -- END DISKCACHE
 -- START DICTIONARY
-0
+1
+1=practiceFile2
 -- END DICTIONARY
 -- START TREE 1
-0
+1
+me|1|me!11@
 -- END TREE
 -- START TREE 2
 0
