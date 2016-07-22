@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+ <title>javascripting</title>
+ <meta charset="utf-8" />
+ <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ </head>
+
+<body>
+	
+
+	<p id="king">This is my text. don't touvh it</p>
+
+	<button id="mybutton">Click thuis button now!!!</button>
+
+	<div id="firstdiv"> he shoulf have put this in a p tag then I wouldn't have been confused.</div>
+	<button id="textapp">this should do everything</button>
+
+	<script type="text/javascript">
+		alert(document.getElementById("king").innerHTML);
+
+		document.getElementById("mybutton").onclick=function() {
+			alert("Herro");
+		}
+
+		document.getElementById("textapp").onclick=function() {
+			document.getElementById("king").innerHTML=document.getElementById("king").innerHTML + document.getElementById("firstdiv").innerHTML
+		}
+	</script>
+</body>
+
+ </html>

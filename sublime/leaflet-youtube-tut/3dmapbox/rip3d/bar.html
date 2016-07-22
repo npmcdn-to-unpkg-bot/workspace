@@ -1,0 +1,65 @@
+
+<html>
+<title>Leaflet 3D</title>
+<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
+<link href='style.css' rel='stylesheet' />
+<script src='jquery.js'></script>
+<body>
+<div class='sidebar full'>
+	<div class='pad2 checkbox-pill'>
+	<div class='small subhead'>SET UP THE MAP</div>
+	  <input type='checkbox' id='tiltmap' onclick="$('.tilter').toggleClass('tiltmap')">
+	  <label for='tiltmap' class='pad1 icon check col12'>Tilt the map back </label>
+	  <input type='checkbox' id='perspective' onclick="$('.stage').toggleClass('perspective')">
+	  <label for='perspective' class='pad1 icon check col12'>Add some perspective</label>
+	 <div class='small subhead'>SET UP THE MARKERS</div>
+	  <input type='checkbox' id='bottomaxis' onclick="$('.marker').toggleClass('bottomaxis')">
+	  <label for='bottomaxis' class='pad1 icon check col12'>Move the origin of rotation</label>
+	  <input type='checkbox' id='flipmarkers' onclick="$('.marker').toggleClass('flipmarkers')">
+	  <label for='flipmarkers' class='pad1 icon check col12'>Flip the markers up</label>
+	 <div class='small subhead'>INTERACTIVITY</div>
+	  <input type='checkbox' id='rotate' onclick="$('.map').attr('style','').toggleClass('rotating')">
+	  <label for='rotate' class='pad1 icon check col12'>Add map rotation</label>
+	  <input type='checkbox' id='keep' onclick="$('.marker img').attr('style','').toggleClass('pivotmarker')">
+	  <label for='keep' class='pad1 icon check col12'>Keep markers pointing forward</label>
+	</div>
+</div>
+<div class='stage full fill-dark'>
+	<div class='tilter'>
+		<div class='map' id='map'>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+	var map = L.mapbox.map('map', 'mapbox.streets',{
+	    zoomControl: false})
+	    .setView([-19.115327, 29.86084], 6);
+		map.scrollWheelZoom.disable();
+		map.dragging.disable();
+
+	var myIcon = L.divIcon({
+		className:'',
+		html:'<div class="marker"><img src="marker.png"/></div>',
+		iconSize: [35, 46]
+	});
+
+	var coords=[[-20.115327, 29.86084],-19.115327, 30.86084],[-19.555327, 29.86084]]
+	coords.forEach(function(n){
+		L.marker(n,{icon:myIcon}).addTo(map);
+	})
+	var angle=80;
+	window.setInterval(function(){
+		$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 0.75s;');
+		if ($('.rotating').length>0) $('.pivotmarker').attr('style','-webkit-transform: rotateY('+angle+'deg);-moz-transform: rotateY('+angle+'deg);-moz-transition:-moz-transform 0.75s;');
+		angle=angle*-1;
+	},1500);
+</script>
+</body>
+
+</html>

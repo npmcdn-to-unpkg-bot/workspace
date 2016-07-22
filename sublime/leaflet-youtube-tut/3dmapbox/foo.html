@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<style>
+
+body { 
+  	margin:0; 
+  	padding:0; 
+}
+
+.sidebar {
+	left:0;
+	width:350px;
+}
+
+#map { 
+  	position:absolute; 
+  	top:0; 
+  	bottom:0; 
+  	width:100%; 
+}
+
+.rightside {
+	height:100%;
+	width: 350px;
+}
+
+#map {
+	overflow:invisible;
+}
+
+.leaflet-container {
+	background:none;
+}
+
+#map, #map {
+	-webkit-transform-style:preserve-3d;
+	transform-style:preserve-3d;
+	/*transform:rotateX(-60deg);*/
+}
+
+.marker {
+	-webkit-transform:translateZ(1px);
+	transform:translateZ(1px);
+}
+
+.tilter {	
+}
+
+.tiltmap {
+	transform:rotateX(-60deg);
+}
+
+</style>
+</head>
+<body>
+<div class='sidebar'>
+	<button id="tilt" onclick="$('.tilter').toggleClass('tiltmap')">tilt</button>
+</div>
+
+<div class='rightside'>
+<div id='map'></div>
+</div>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+var map = L.mapbox.map('map', 'mapbox.streets')
+    .setView([-19.115327, 29.86084], 6);
+</script>
+</body>
+</html>
