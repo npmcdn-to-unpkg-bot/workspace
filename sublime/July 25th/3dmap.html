@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js" ></script>
+<style>
+  body { perspective:1200; margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; transform:rotateX(-60deg);}
+  #tiltmap { position:absolute; top:0; bottom:0; width:100%; transform:rotateX(-60deg);}
+
+  / *make vertical objects visible */
+#map {
+  overflow:visible;
+
+
+}
+
+/* removes a flickering background color */
+.leaflet-container {
+  background:none;
+}
+
+/* set up our 3D space */
+#map,
+#map * {
+  -webkit-transform-style:preserve-3d;
+  transform-style:preserve-3d;
+
+}
+
+/* Optional: this will help you see what's going on as we build the tilted view, but can be removed */
+.marker {
+  -webkit-transform:translateZ(1px);
+  transform:translateZ(1px);
+}
+
+	.tiltbutton {
+		width: 200px;
+		height: 50px;
+		background-color: blue;
+		border-radius: 10px;
+		float: right;
+	}
+</style>
+</head>
+<body>
+<div id='map'>
+	
+	<script>
+		L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+		var map = L.mapbox.map('map', 'mapbox.streets')
+	    	.setView([-17.9, 31.1], 6);
+
+	    //this is because I couldn't get the toggle. switch counter	
+	    var switcher = 0;
+
+	    function tilter() {
+	    	
+	    	//var switcher = 0;
+	    	
+	    	if ((switcher % 2) == 0) {
+	    		$('#map').css('transform', 'rotateX(00deg)');
+	    	} else {
+	    		$('#map').css('transform', 'rotateX(-60deg)');
+	    	}
+
+	    	
+	    	//	$('#map').css('transform', 'rotateX(00deg)');
+	    		/*
+	    		$("#map").toggle(
+	    			function() {
+	    				$(this).css('transform', 'rotateX(00deg)');
+	    			},
+	    			function() {
+	    				$(this).css('transform', 'rotateX(-60deg)');
+	    			}
+	    		)	
+	    		*/
+	    	switcher++;
+	    }
+	    
+	</script>
+	<div class='tiltbutton' onclick="tilter()">
+		<p style="color:white;"><strong>Click here to tilt map</strong></p>
+	</div>
+
+</div>
+
+<div class="marker">
+	<script type="text/javascript">
+	var myIcon = L.divIcon({
+    className:'',
+    html:'<div class="marker"><img src="marker.png"/></div>',
+    iconSize: [35, 46]
+  });
+
+  L.marker(<latlng>,{icon:myIcon}).addTo(map);
+  </script>
+</div>
+
+</body>
+</html>
