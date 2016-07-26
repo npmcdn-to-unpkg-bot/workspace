@@ -31,10 +31,15 @@
 	width:350px;
 }
 
+/* .stage is combined full fill-dark in the the div that holds the the tilter and map */
 .stage {
 	left:300px;
 	right:0px;
 	overflow:hidden;
+
+	/* this handled aligning the perspective for the tilt */
+	-webkit-perspective:1200;
+	-moz-perspective:1200px;
 }
 
 .map {
@@ -60,7 +65,7 @@
 	-moz-transform:rotateX(60deg);
 
 }
-
+/* perspective is now depricated. It is handled by the tilt map. */
 .perspective {
 	-webkit-perspective:1200;
 	-moz-perspective:1200px;
