@@ -9,7 +9,6 @@
 <script src='jquery.js'></script>
 <body>
 <div class='sidebar full' style="background-color:pink;">
-	<script>map.addControl(new mapboxgl.Navigation());</script>
 	<div class='pad2 checkbox-pill'>
 	<div class='small subhead'>SET UP THE MAP</div>
 	  <input type='checkbox' id='tiltmap' onclick="$('.tilter').toggleClass('tiltmap')">
@@ -28,7 +27,7 @@
 	  <label for='keep' class='pad1 icon check col12'>Keep markers pointing forward</label>
 	</div>
 </div>
-<div class='stage full fill-dark' style="background-color:black;">
+<div class='stage full fill-dark' style="background-color:#2A2A2A;">
 	<div class='tilter'>
 		<div class='map' id='map'>
 		</div>
@@ -51,7 +50,7 @@
 	});
 
 	var coords=[[-19.9, 31.1],[-17.9, 32.1],[-15.9, 31.1]]
-	coords.forEach(function(n){
+		coords.forEach(function(n){
 		L.marker(n,{icon:myIcon}).addTo(map);
 	})
 	var angle=80;
@@ -72,8 +71,25 @@
     return bounds;
 	};
 
-
-
+	//map rotation
+	$('body').on('mousedown','.tilter',
+	  function(e){
+	        xpos=e.pageX;
+	        window.isDown = true;
+	    })
+	    .on('mousemove','.tilter', function(e){
+	      if(isDown){
+	        xdrag =(xpos-e.pageX)/4;
+	        $('.map').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)%360+'deg)');
+	       // $('.elevmarker').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
+	      }
+	    })
+	  .on('mouseup','.tilter',function(){
+	    isDown=false;
+	    angle = angle+xdrag;
+	  });
+		
+	  
 </script>
 </body>
 

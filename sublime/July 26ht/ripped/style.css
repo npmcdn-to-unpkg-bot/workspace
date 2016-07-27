@@ -46,7 +46,7 @@
 	width:100%;
 	height:100%;
 	margin:20% 30%;
-	transform-origin: bottom;
+	transform-origin: 0%; /*origin to center of page*/
 	position:relative;
 	overflow:visible;
 }
