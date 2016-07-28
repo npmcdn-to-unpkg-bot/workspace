@@ -1,9 +1,9 @@
 <html>
-<title>Leaflet 3D</title>
+<title>tilt and rotate</title>
 <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+<!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' /> -->
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
 <link href='style.css' rel='stylesheet' />
 <script src='jquery.js'></script>
@@ -36,12 +36,21 @@
 
 
 <script>
+
 	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
 
 	var map = L.mapbox.map('map', 'mapbox.streets',{
 	    zoomControl: false})
-	    .setView([-17.9, 31.1], 6);
+	    .setView([-19.9, 31.1], 6);
+
+	var polys = [
+		[-13.1, 31.1],
+		[-15.4, 29.9]
+	];
+
+	var polyline = L.polyline(polys, {color: "red"}).addTo(map);
 		
+	// var thisline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red', weight: 10,}).addTo(map);
 
 	var myIcon = L.divIcon({
 		className:'',
@@ -53,6 +62,21 @@
 		coords.forEach(function(n){
 		L.marker(n,{icon:myIcon}).addTo(map);
 	})
+
+	// var plyline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red'}).addTo(map).bringToFront();
+
+	var myIco = L.divIcon({
+		className:'',
+		html:'<div class="marker"><img src="marker - Copy.png"/></div>',
+		iconSize: [35, 46]
+	});
+
+	var coords=[[-18.9, 31.1],[-16.9, 32.1],[-15.9, 25.1]]
+		coords.forEach(function(n){
+		L.marker(n,{icon:myIco}).addTo(map);
+	})
+
+
 	var angle=80;
 	window.setInterval(function(){
 		$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 0.75s;');
@@ -88,9 +112,31 @@
 	    isDown=false;
 	    angle = angle+xdrag;
 	  });
-		
-	  
+
+/*	  var nav = new mapboxgl.Navigation({position: 'bottom-left'});
+	  nav. addTo(map);*/
+/*	  var pointA = new L.Latlng(-13.1, 31.1);
+	  var pointB = new L.Latlng(-17.1, 32.1);
+	  var pointList = [pointA, pointB];
+
+	  var firstpolyline = new L.Polyline(pointList {
+	  	color: 'blue',
+	  	weight: 3
+	  });
+
+	  firstpolyline.addTo(map);*/
+
+	//plyline.addTo(map);
+	//map.fitBounds(polyline.getBounds());
+
+
+	//var nav = new mapboxgl.Navigation();
+	//plyline.addTo(map);
+	
+
 </script>
+<!-- <div id="controls"><script>map.addControl(new mapboxgl.Navigation({postion: 'bottom-right'}));</script></div>
+ -->
 </body>
 
 </html>

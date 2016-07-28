@@ -7,6 +7,16 @@
 
 
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+<!-- 	<style type="text/css">
+		#mapid {
+
+	-webkit-transform:rotateX(60deg);
+	-moz-transform:rotateX(60deg);
+
+
+		}
+	</style> -->
 </head>
 <body>
 	<div id="mapid" style="width: 1500px; height: 1000px"></div>
@@ -48,6 +58,8 @@
 			fillColor: 'green',
 			fillOpacity: 0.5
 			}).addTo(mymap);
+
+		var thisline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red', weight: 10,}).addTo(mymap);
 
 		marker.bindPopup("<b>Zimbabwe</b><br><i><strong>The center of the universe!</strong></i>").openPopup();
 		circle.bindPopup("This is a pretty circle");

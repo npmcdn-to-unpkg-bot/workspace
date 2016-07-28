@@ -4,15 +4,20 @@
 <meta charset=utf-8 />
 <title>Map Biz</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js" ></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src='https://api.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+
 <style>
   body { -moz-perspective:1200px; margin:0; padding:0; bottom: 0; background:#f4f4f4;overflow:hidden;}
   #map { position:absolute; top:0; bottom:0; width:100%; transform:rotateX(00deg); }
-  #tiltmap { position:absolute; top:0; bottom:0; width:100%; height: 100%; transform:rotateX(-60deg); transform:rotateZ(90deg); overflow: visible;}
+  #tiltmap { position:absolute; top:0; bottom:0; width:100%; height: 100%; transform:rotateX(-60deg); transform:rotateZ(90deg); overflow: visible; transform-origin: bottom;}
 
-  / *make vertical objects visible */
+  /*make vertical objects visible */
 #map {
   overflow:visible;
 
@@ -51,6 +56,7 @@
 </style>
 </head>
 <body>
+
 <div id='map'>
 <input type="button" value="rclick" id ="btn2">
 	
@@ -59,6 +65,54 @@
 
 		var map = L.mapbox.map('map', 'mapbox.streets')
 	    	.setView([-17.9, 31.1], 6);
+
+
+	    // var lats = [
+	    // 	[-13.1, 31.1], 
+	    // 	[-15.4, 29.9], 
+	    // 	[-19.3, 32.5]
+	    // ];
+
+
+
+	    map.on('load', function () {
+	    map.addSource("route", {
+	        "type": "geojson",
+	        "data": {
+	            "type": "Feature",
+	            "properties": {},
+	            "geometry": {
+	                "type": "LineString",
+	                "coordinates": [
+	                	[-13.1, 31.1], 
+	    				[-15.4, 29.9], 
+	     				[-19.3, 32.5]
+	                ]
+	            }
+	        }
+	    });
+
+	    map.addLayer({
+	        "id": "route",
+	        "type": "line",
+	        "source": "route",
+	        "layout": {
+	            "line-join": "round",
+	            "line-cap": "round"
+	        },
+	        "paint": {
+	            "line-color": "red",
+	            "line-width": 8
+	        }
+	    });
+		});
+
+
+
+	   //L.polyline(lats, {color: 'red'}).addTo(map);	
+	   //map.fitBounds(polyline.getBounds());
+
+	   //plyline.bringToFront(map);
 
 	    var myIcon = L.divIcon({
 		    className:'marker',
@@ -69,6 +123,53 @@
 	  	});
 
 	  	L.marker([-17.5, 31.1],{icon:myIcon}).addTo(map);
+
+	  	var polygon = L.polygon([
+			[-20.378423, 30.080060],
+			[-20.779548, 30.426636],
+			[-20.666517, 31.195670],
+			[-21.271779, 30.517526],
+			[-21.772672, 31.063843],
+			[-21.159120, 30.053101],
+			[-21.588080, 29.262085],
+			[-21.025860, 29.470825],
+			[-20.800090, 29.053345],
+			[-20.820629, 29.778442]],
+			{
+			color:'pink',
+			fillColor: 'green',
+			fillOpacity: 0.5
+			}).addTo(map);
+
+	  	// map.on('load', function () {
+    // 	map.addSource("route", {
+    //     	"type": "geojson",
+    //     	"data": {
+    //         "type": "Feature",
+    //         "properties": {},
+    //         "geometry": {
+    //             "type": "LineString",
+    //             "coordinates": [
+    //                 [-19.9, 31.1],
+    //                 [-15.9, 31.1]
+    //             ]
+    //         }
+    //     }
+    // 	});
+
+    // 	map.addLayer({
+	   //      "id": "route",
+	   //      "type": "line",
+	   //      "source": "route",
+	   //      "layout": {
+	   //          "line-join": "round",
+	   //          "line-cap": "round"
+    //     },
+    //     "paint": {
+    //         "line-color": "red",
+    //         "line-width": 8
+    //     }
+    // 	});
 
 	  	
 
@@ -112,6 +213,7 @@
 	</script>
 	<div class='tiltbutton' onclick="tilter()">
 		<p style="color:white; padding-left:25px; padding-top:12px;"><strong>Click here to tilt map</strong></p>
+		<script type="text/javascript"></script>
 	</div>
 
 
