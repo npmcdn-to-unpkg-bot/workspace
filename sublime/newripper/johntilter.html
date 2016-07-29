@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #tilter {
+    width: 250px;
+    height: 50px;
+    background-color: red;
+    position: absolute;
+    z-index: 10;
+}
+    </style>
+</head>
+<body>
+<div id='tilter' onclick="tilter();"></div>
+<div id='map'></div>
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v8',
+    center: [31.1, -19.9],
+    pitch: 00, // pitch in degrees
+    bearing: 00, // bearing in degrees
+    zoom: 6
+});
+
+map.on('load', function () {
+    map.addSource("route", {
+        "type": "geojson",
+        "data": {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [31.1, -19.9],
+                    [31.1, -15.9]
+                ]
+            }
+        }
+    });
+
+    map.addLayer({
+        "id": "route",
+        "type": "line",
+        "source": "route",
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "red",
+            "line-width": 8
+        }
+    });
+})
+
+var switcher = 0;
+
+function tilter() {
+    
+    if (switcher % 2 == 0) {
+        map.easeTo({pitch: 60});
+    } else {
+        map.easeTo({pitch: 00});
+    }
+    switcher++;
+    if (switcher % 2 == 0) {
+        switcher = 0;
+    }
+}
+
+//map.easeTo({pitch: 60});
+console.log(map);
+//alert(map.getPitch());
+</script>
+
+</body>
+</html>

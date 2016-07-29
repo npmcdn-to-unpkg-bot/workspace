@@ -65,7 +65,7 @@
 	-moz-transform:rotateX(60deg);
 
 }
-/* perspective is now depricated. It is handled by the tilt map. */
+/* perspective is now depricated. It is handled by the tiltmap. */
 .perspective {
 	-webkit-perspective:1200;
 	-moz-perspective:1200px;

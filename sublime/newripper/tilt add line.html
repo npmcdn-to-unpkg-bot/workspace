@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tilt add line</title>
+	<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
+	<link href='style.css' rel='stylesheet' />
+	<script src='jquery.js'></script>
+</head>
+<body>
+	
+		<div class="side holder">
+			<div class="surveys">
+				
+			</div>
+			<div class="transects">
+				
+			</div>
+		</div>
+		<div id="tiltm" onclick="$('.tilter').toggleClass('tiltmap')"><div>Tilter</div></div>
+		<div class="main" style="background-color:#2A2A2A;">
+			<div class="tilter">
+
+				<div class="map" id="map">
+				
+				
+			</div>
+			<div id="footer"><h1 style="color: white;">footer<h1></div>	
+				</div>
+		</div>
+	
+	<script type="text/javascript">
+
+		L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+		
+		var map = L.mapbox.map('map', 'mapbox.streets',{
+		    zoomControl: false})
+		    .setView([-19.9, 31.1], 6);
+
+		var polys = [
+			[-19.9, 31.1],
+			[-17.9, 32.1],
+			[-15.9, 31.1]
+		];
+
+		var polyline = L.polyline(polys, {color: "red"});
+		map.addLayer(polyline)
+
+	</script>
+</body>
+</html>

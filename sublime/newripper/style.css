@@ -1,0 +1,73 @@
+.leaflet-container {
+	background:none;
+}
+
+.leaflet-control {
+	display:none;
+}
+
+#footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	left: 100px;
+}
+
+#map {
+	width:100%;
+	height:100%;
+	bottom: 0px;
+	margin: 0px 30px;
+	transform-origin: 0%; /*origin to center of page*/
+	position: absolute;
+	overflow: visible;
+/*	-webkit-transform:rotateX(60deg);
+	-moz-transform:rotateX(60deg);*/
+}
+
+.tilter {
+	
+}
+
+#tiltm {
+	width: 250px;
+	height: 50px;
+	background-color: red;
+	position: absolute;
+	z-index: 10;
+}
+
+.tiltmap {
+	-webkit-transform:rotateX(60deg);
+	-moz-transform:rotateX(60deg);
+	-moz-transition:-moz-transform 1.2s;
+	-moz-transform-style:preserve-3d;
+	-webkit-transition:-webkit-transform 1.2s;
+	-webkit-transform-style:preserve-3d;
+}
+
+
+
+/*.tilt {
+	width: 250px;
+	height: 50px;
+	border-radius: 15px;
+	position: relative;
+	z-index: 10;
+	background-color: red;
+
+}*/
+
+.main {
+	width: 100%;
+	height:100%;
+	position:absolute;
+	overflow:hidden;
+	-webkit-perspective:1200;
+	-moz-perspective:1200px;
+
+}
+	/* this handled aligning the perspective for the tilt */
+/*	-webkit-perspective:1200;
+	-moz-perspective:1200px;*/
+

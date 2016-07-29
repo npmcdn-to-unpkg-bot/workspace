@@ -43,6 +43,8 @@
 	    zoomControl: false})
 	    .setView([-19.9, 31.1], 6);
 
+/**********************************************************
+
 	var polys = [
 		[-19.9, 31.1],
 		[-17.9, 32.1],
@@ -52,8 +54,8 @@
 	var polyline = L.polyline(polys, {color: "red"});
 	map.addLayer(polyline)
 
-		
-	// var thisline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red', weight: 10,}).addTo(map);
+
+**********************************************************/
 
 	var myIcon = L.divIcon({
 		className:'',
@@ -66,8 +68,6 @@
 		L.marker(n,{icon:myIcon}).addTo(map);
 	})
 
-	// var plyline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red'}).addTo(map).bringToFront();
-
 	var myIco = L.divIcon({
 		className:'',
 		html:'<div class="marker"><img src="marker - Copy.png"/></div>',
@@ -78,7 +78,6 @@
 		coords.forEach(function(n){
 		L.marker(n,{icon:myIco}).addTo(map);
 	})
-
 
 	var angle=80;
 	window.setInterval(function(){
@@ -98,6 +97,9 @@
     return bounds;
 	};
 
+
+/********************************************************
+
 	//map rotation
 	$('body').on('mousedown','.tilter',
 	  function(e){
@@ -115,6 +117,9 @@
 	    isDown=false;
 	    angle = angle+xdrag;
 	  });
+
+
+*******************************************************/	  
 
 /*	  var nav = new mapboxgl.Navigation({position: 'bottom-left'});
 	  nav. addTo(map);*/
@@ -138,8 +143,6 @@
 	
 
 </script>
-<!-- <div id="controls"><script>map.addControl(new mapboxgl.Navigation({postion: 'bottom-right'}));</script></div>
- -->
 </body>
 
 </html>
