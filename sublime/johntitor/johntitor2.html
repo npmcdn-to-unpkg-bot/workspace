@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #tilter {
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    margin-left: 50px;
+    margin-top: 50px;
+    background-color: #656565;
+    position: absolute;
+    z-index: 10;
+}
+.marker {
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-image: url('images/observations 2.png');
+}
+    </style>
+</head>
+<body>
+<div id='tilter' onclick="tilter();"></div>
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v9',
+    maxZoom: 10,
+    minZoom: 3.2,
+    center: [20.917969, 2.010086],
+    pitch: 00, // pitch in degrees
+    bearing: 00, // bearing in degrees
+    zoom: 1
+});
+
+
+
+var switcher = 0;
+function tilter() {
+    
+    if (switcher % 2 == 0) {
+        map.easeTo({pitch: 60});
+    } else {
+        map.easeTo({pitch: 00});
+    }
+    switcher++;
+    if (switcher % 2 == 0) {
+        switcher = 0;
+    }
+}
+
+
+var dat = map.on('load', function () {
+    map.addSource('stratum1', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {
+                'name': 'Statum1'
+            },
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [[
+                    //eastwest         northsouth 
+                    [28.168945, -17.54185], //western most points
+                    [30.168945, -17.54185], // bottom right
+                    [30.168945, -17.14185],
+                    [28.168945, -17.14185] //western most points
+                    ]] 
+            }
+        }
+    });
+    map.addLayer({
+        'id': 'stratum1', // need differnt id's
+        'type': 'fill',
+        'source': 'stratum1',
+        'layout': {},
+        'paint': {
+            'fill-color': 'red',
+            'fill-opacity': 0.8
+        }
+    });
+});
+
+/****************************************transects************************************************/
+var tranny = map.on('load', function () {
+    map.addSource("linorino1", { // needs to match below id
+        "type": "geojson",
+        "data": {
+            "features": [{
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [28.168945, -17.14185], //western most points
+                    [30.168945, -17.14185]  // eastern most point
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [28.168945, -17.24185], //western most points
+                    [30.168945, -17.24185] // eastern most point
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [28.168945, -17.34185], //western most points
+                    [30.168945, -17.34185] // eastern most point
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [28.168945, -17.44185], //western most points
+                    [30.168945, -17.44185] // eastern most point
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [28.168945, -17.54185], //western most points
+                    [30.168945, -17.54185] // eastern most point
+                ]
+            }
+        }]
+        }
+    });
+
+    map.addLayer({
+        "id": "linorino1", //layer id
+        "type": "line",
+        "source": "linorino1", // needs to match the above add source id
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "blue",
+            "line-width": 3
+        }
+    });
+});
+
+
+
+
+
+/*****************************************************************************************/
+
+map.on('click', function (e) {
+
+
+    // Use queryRenderedFeatures to get features at a click event's point
+    // Use layer option to avoid getting results from other layers
+    var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
+    // if there are features within the given radius of the click event,
+    // fly to the location of the click event
+    if (features.length) {
+        // Get coordinates from the symbol and center the map on those coordinates
+        map.flyTo({zoom: 6, center: features[0].geometry.coordinates[0][0]});
+        map.removeLayer('stratum1');
+        //map.addLayer('transects');
+        
+    }
+});
+
+// Use the same approach as above to indicate that the symbols are clickable
+// by changing the cursor style to 'pointer'.
+map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+});
+
+/*****************************markers************************************/
+
+
+</script>
+
+</body>
+</html>
