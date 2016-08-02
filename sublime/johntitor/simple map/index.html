@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm', //stylesheet location
+    center: [32, -13], // starting position
+    zoom: 6 // starting zoom
+});
+// var dat = map.on('load', function () {
+//     map.addSource("poacher": {
+//       "type": "geojson",
+//       "data": "poachex.geojson"
+//     });
+
+//         map.addLayer({
+//         'id': 'poacher', // need differnt id's
+//         'type': 'fill',
+//         'source': 'poacher',
+//         'layout': {},
+//         'paint': {
+//             'fill-color': 'red',
+//             'fill-opacity': 0.8
+//         }
+//     });
+
+// });
+
+var dis = new GeoJSONSource({
+        data: 'poachex.geojson'
+    });
+
+map.addSource('poach', {
+    data: 'poachex.geojson'
+});
+
+map.setData('poachex.geojson')
+
+// map.addSource('some id', {
+//     data: 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_ports.geojson'
+// });
+// map.addSource('some id', {
+//     data: {
+//         "type": "FeatureCollection",
+//         "features": [{
+//             "type": "Feature",
+//             "geometry": {
+//                 "type": "Point",
+//                 "coordinates": [
+//                     -76.53063297271729,
+//                     39.18174077994108
+//                 ]
+//             }
+//         }]
+//     }
+// });
+
+swith sthjbe kkj+ the kte;
+
+
+
+
+</script>
+
+</body>
+</html>

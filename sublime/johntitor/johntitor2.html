@@ -26,7 +26,12 @@
     cursor: pointer;
     background-image: url('images/observations 2.png');
 }
+
+#poach-5mg0hh {
+	fill-color: green;
+}
     </style>
+}
 </head>
 <body>
 <div id='tilter' onclick="tilter();"></div>
@@ -35,7 +40,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/dark-v9',
+    style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',
     maxZoom: 10,
     minZoom: 3.2,
     center: [20.917969, 2.010086],
@@ -203,7 +208,14 @@ map.on('mousemove', function (e) {
 
 /*****************************markers************************************/
 
-
+// L.marker is a low-level marker constructor in Leaflet.
+L.marker([37.9, -77], {
+    icon: L.mapbox.marker.icon({
+        'marker-size': 'large',
+        'marker-symbol': 'bus',
+        'marker-color': '#fa0'
+    })
+}).addTo(map);
 </script>
 
 </body>

@@ -1,119 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8' />
-    <title></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
-    </style>
+<meta charset=utf-8 />
+<title>Leaflet Draw</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
 </head>
 <body>
 
+
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>
+
 <div id='map'></div>
+
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
-var mapStyle = {
-    "version": 8,
-    "name": "Dark",
-    "sources": {
-        "mapbox": {
-            "type": "vector",
-            "url": "mapbox://mapbox.mapbox-streets-v6"
-        },
-        "overlay": {
-            "type": "image",
-            "url": "https://www.mapbox.com/mapbox-gl-js/assets/radar.gif",
-            "coordinates": [
-                [-80.425, 46.437],
-                [-71.516, 46.437],
-                [-71.516, 37.936],
-                [-80.425, 37.936]
-            ]
-        }
-    },
-    "sprite": "mapbox://sprites/mapbox/dark-v9",
-    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
-    "layers": [
-        {
-            "id": "background",
-            "type": "background",
-            "paint": {"background-color": "#111"}
-        },
-        {
-            "id": "water",
-            "source": "mapbox",
-            "source-layer": "water",
-            "type": "fill",
-            "paint": {"fill-color": "#2c2c2c"}
-        },
-        {
-            "id": "boundaries",
-            "source": "mapbox",
-            "source-layer": "admin",
-            "type": "line",
-            "paint": {"line-color": "#797979", "line-dasharray": [2, 2, 6, 2]},
-            "filter": ["all", ["==", "maritime", 0]]
-        },
-        {
-            "id": "overlay",
-            "source": "overlay",
-            "type": "raster",
-            "paint": {"raster-opacity": 0.85}
-        },
-        {
-            "id": "cities",
-            "source": "mapbox",
-            "source-layer": "place_label",
-            "type": "symbol",
-            "layout": {
-                "text-field": "{name_en}",
-                "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                "text-size": {"stops": [[4, 9], [6, 12]]}
-            },
-            "paint": {
-                "text-color": "#969696",
-                "text-halo-width": 2,
-                "text-halo-color": "rgba(0, 0, 0, 0.85)"
-            }
-        },
-        {
-            "id": "states",
-            "source": "mapbox",
-            "source-layer": "state_label",
-            "type": "symbol",
-            "layout": {
-                "text-transform": "uppercase",
-                "text-field": "{name_en}",
-                "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-                "text-letter-spacing": 0.15,
-                "text-max-width": 7,
-                "text-size": {"stops": [[4, 10], [6, 14]]}
-            },
-            "filter": [">=", "area", 80000],
-            "paint": {
-                "text-color": "#969696",
-                "text-halo-width": 2,
-                "text-halo-color": "rgba(0, 0, 0, 0.85)"
-            }
-        }
-    ]
-};
+L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+  var map = L.mapbox.map('map', 'mapbox.streets')
+      .setView([38.89399, -77.03659], 17);
 
-var map = new mapboxgl.Map({
-    container: 'map',
-    maxZoom: 5.99,
-    minZoom: 4,
-    zoom: 5,
-    center: [-75.789, 41.874],
-    style: mapStyle,
-    hash: false
-});
+  var featureGroup = L.featureGroup().addTo(map);
 
+  // Define circle options
+  // http://leafletjs.com/reference.html#circle
+  var circle_options = {
+      color: '#fff',      // Stroke color
+      opacity: 1,         // Stroke opacity
+      weight: 10,         // Stroke weight
+      fillColor: '#000',  // Fill color
+      fillOpacity: 0.6    // Fill opacity
+  };
+
+  var circle_one = L.circle([38.89415, -77.03738], 20, circle_options).addTo(featureGroup);
+  var circle_two = L.circle([38.89415, -77.03578], 20, circle_options).addTo(featureGroup);
+
+  // Create array of lat,lon points
+  var line_points = [
+      [38.893596444352134, -77.0381498336792],
+      [38.89337933372204, -77.03792452812195],
+      [38.89316222242831, -77.03761339187622],
+      [38.893028615148424, -77.03731298446655],
+      [38.892920059048464, -77.03691601753235],
+      [38.892903358095296, -77.03637957572937],
+      [38.89301191422077, -77.03592896461487],
+      [38.89316222242831, -77.03549981117249],
+      [38.89340438498248, -77.03514575958252],
+      [38.893596444352134, -77.0349633693695]
+  ];
+
+  // Define polyline options
+  // http://leafletjs.com/reference.html#polyline
+  var polyline_options = {
+      color: '#000'
+  };
+
+  // Defining a polygon here instead of a polyline will connect the
+  // endpoints and fill the path.
+  // http://leafletjs.com/reference.html#polygon
+  var polyline = L.polyline(line_points, polyline_options).addTo(featureGroup);
+
+  var drawControl = new L.Control.Draw({
+    edit: {
+      featureGroup: featureGroup
+    }
+  }).addTo(map);
+
+  map.on('draw:created', function(e) {
+      featureGroup.addLayer(e.layer);
+
+
+  });
+
+
+  // L.marker is a low-level marker constructor in Leaflet.
+L.marker([37.9, -77], {
+    icon: L.mapbox.marker.icon({
+        'marker-size': 'large',
+        'marker-symbol': 'bus',
+        'marker-color': '#fa0'
+    })
+}).addTo(map);
 </script>
+
 
 </body>
 </html>
