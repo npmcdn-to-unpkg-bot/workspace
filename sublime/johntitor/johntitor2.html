@@ -43,10 +43,10 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',
     maxZoom: 10,
     minZoom: 3.2,
-    center: [20.917969, 2.010086],
+    center: [31.5000, -13.1667],
     pitch: 00, // pitch in degrees
     bearing: 00, // bearing in degrees
-    zoom: 1
+    zoom: 4
 });
 
 
@@ -78,10 +78,11 @@ var dat = map.on('load', function () {
                 'type': 'Polygon',
                 'coordinates': [[
                     //eastwest         northsouth 
-                    [28.168945, -17.54185], //western most points
-                    [30.168945, -17.54185], // bottom right
-                    [30.168945, -17.14185],
-                    [28.168945, -17.14185] //western most points
+                    [32.868945, -11.04185], //western most points
+                    [33.368945, -12.14185], // bottom right
+                    [32.1168945, -13.14185],
+                    [31.1168945, -14.14185],
+                    [31.1168945, -12.54185] //western most points
                     ]] 
             }
         }
@@ -92,8 +93,8 @@ var dat = map.on('load', function () {
         'source': 'stratum1',
         'layout': {},
         'paint': {
-            'fill-color': 'red',
-            'fill-opacity': 0.8
+            'fill-color': '#6D76BF',
+            'fill-opacity': 1
         }
     });
 });
@@ -177,7 +178,7 @@ var tranny = map.on('load', function () {
 });
 
 
-
+console.log(map)
 
 
 /*****************************************************************************************/
@@ -209,13 +210,7 @@ map.on('mousemove', function (e) {
 /*****************************markers************************************/
 
 // L.marker is a low-level marker constructor in Leaflet.
-L.marker([37.9, -77], {
-    icon: L.mapbox.marker.icon({
-        'marker-size': 'large',
-        'marker-symbol': 'bus',
-        'marker-color': '#fa0'
-    })
-}).addTo(map);
+
 </script>
 
 </body>

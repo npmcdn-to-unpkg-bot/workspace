@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View Rotation</title>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.13.0/css/ol.css" type="text/css">
+    <script src="http://openlayers.org/en/v3.13.0/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        target: 'map',
+        controls: ol.control.defaults({
+          attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+            collapsible: false
+          })
+        }),
+        view: new ol.View({
+          center: [30, -19],
+          rotation: Math.PI / 6,
+          zoom: 10,
+          tilt:45
+        })
+      });
+      map.tilt(45);
+
+    function autoRotate() {
+    // Determine if we're showing aerial imagery
+    if (map.getTilt() != 0) {
+      window.setInterval(rotate90, 3000);
+    }
+  }
+    </script>
+  </body>
+</html>

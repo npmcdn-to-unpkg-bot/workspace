@@ -37,7 +37,7 @@
 <script>
 	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
 
-	var map = L.mapbox.map('map', 'mapbox.streets',{
+	var map = L.mapbox.map('map', 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',{
 	    zoomControl: false})
 	    .setView([-19.115327, 29.86084], 6);
 		map.scrollWheelZoom.disable();
@@ -52,7 +52,7 @@
 	var coords=[[-20.115327, 29.86084],-19.115327, 30.86084],[-19.555327, 29.86084]]
 	coords.forEach(function(n){
 		L.marker(n,{icon:myIcon}).addTo(map);
-	})
+	});
 	var angle=80;
 	window.setInterval(function(){
 		$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 0.75s;');

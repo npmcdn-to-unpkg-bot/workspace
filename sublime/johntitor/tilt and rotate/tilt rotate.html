@@ -1,0 +1,126 @@
+<html>
+<title>tilt and rotate</title>
+<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+<script src='turf.min.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
+<link href='style.css' rel='stylesheet' />
+<script src='jquery.js'></script>
+<body style="background-color:#2A2A2A;">
+<!-- <div class='sidebar full' style="background-color:transparent;">
+	<div class='pad2 checkbox-pill'>
+	<div class='small subhead'>SET UP THE MAP</div>
+	  <input type='checkbox' id='tiltmap' onclick="$('.tilter').toggleClass('tiltmap')">
+	  <label for='tiltmap' class='pad1 icon check col12'>Tilt the map back </label>
+	  <input type='checkbox' id='perspective' onclick="$('.stage').toggleClass('perspective')">
+	  <label for='perspective' class='pad1 icon check col12'>Add some perspective</label>
+	 <div class='small subhead'>SET UP THE MARKERS</div>
+	  <input type='checkbox' id='bottomaxis' onclick="$('.marker').toggleClass('bottomaxis')">
+	  <label for='bottomaxis' class='pad1 icon check col12'>Move the origin of rotation</label>
+	  <input type='checkbox' id='flipmarkers' onclick="$('.marker').toggleClass('flipmarkers')">
+	  <label for='flipmarkers' class='pad1 icon check col12'>Flip the markers up</label>
+	 <div class='small subhead'>INTERACTIVITY</div>
+	  <input type='checkbox' id='rotate' onclick="$('.map').attr('style','').toggleClass('rotating')">
+	  <label for='rotate' class='pad1 icon check col12'>Add map rotation</label>
+	  <input type='checkbox' id='keep' onclick="$('.marker img').attr('style','').toggleClass('pivotmarker')">
+	  <label for='keep' class='pad1 icon check col12'>Keep markers pointing forward</label>
+	</div>
+</div> -->
+<div class='stage full fill-dark' style="background-color:#2A2A2A;">
+	<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
+	<div id='tiltmarker' onclick="$('.marker').toggleClass('flipmarkers')"></div>
+	<div class='tilter'>
+		<div class='map' id='map'>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+	var map = L.mapbox.map('map', 'mapbox.streets',{
+	    zoomControl: false})
+	    .setView([-19.9, 35.1], 6);
+	var polys = [
+		[-19.9, 31.1],
+		[-17.9, 32.1],
+		[-15.9, 31.1]
+	];
+	var polyline = L.polyline(polys, {color: "red"});
+	map.addLayer(polyline)
+		
+	// var thisline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red', weight: 10,}).addTo(map);
+	var myIcon = L.divIcon({
+		className:'',
+		html:'<div class="marker" style=""><img src="3d bar for dataviz copy.svg"     -moz-transition:-webkit-transform 1.5s; -webkit-transition:-webkit-transform 1.5s;/></div>',
+		iconSize: [155, 166],
+	});
+	var coords=[[-19.9, 31.1],[-17.9, 32.1],[-15.9, 31.1]]
+		coords.forEach(function(n){
+		L.marker(n,{icon:myIcon}).addTo(map);
+	})
+	// var plyline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red'}).addTo(map).bringToFront();
+	var myIco = L.divIcon({
+		className:'',
+		html:'<div class="marker"><img src="3d bar for dataviz copy half.svg"/></div>',
+		iconSize: [35, 46]
+	});
+	var coords=[[-18.9, 31.1],[-16.9, 32.1],[-15.9, 25.1]]
+		coords.forEach(function(n){
+		L.marker(n,{icon:myIco}).addTo(map);
+	})
+	// var angle=10;
+	// window.setInterval(function(){
+	// 	$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
+	// 	if ($('.rotating').length>0) $('.pivotmarker').attr('style','-webkit-transform: rotateY('+angle+'deg);-moz-transform: rotateY('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
+	// 	angle=angle*-1;
+	// },1500);
+	var getPxBounds = map.getPixelBounds;
+	map.getPixelBounds = function () {
+    	var bounds = getPxBounds.call(this);
+	    // ... extend the bounds
+	    bounds.min.x=bounds.min.x-1000;
+	    bounds.min.y=bounds.min.y-1000;
+	    bounds.max.x=bounds.max.x+1000;
+	    bounds.max.y=bounds.max.y+1000;
+    return bounds;
+	};
+	//map rotation
+	$('body').on('mousedown','.tilter',
+	  function(e){
+	        xpos=e.pageX;
+	        window.isDown = true;
+	    })
+	    .on('mousemove','.tilter', function(e){
+	      if(isDown){
+	        xdrag =(xpos-e.pageX)/4;
+	        $('.map').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)*(-1)%360+'deg)').attr('display', 'block');
+	        $('.flipmarkers').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
+	      }
+	    })
+	  .on('mouseup','.tilter',function(){
+	    isDown=false;
+	    angle = angle+xdrag;
+	  });
+/*	  var nav = new mapboxgl.Navigation({position: 'bottom-left'});
+	  nav. addTo(map);*/
+/*	  var pointA = new L.Latlng(-13.1, 31.1);
+	  var pointB = new L.Latlng(-17.1, 32.1);
+	  var pointList = [pointA, pointB];
+	  var firstpolyline = new L.Polyline(pointList {
+	  	color: 'blue',
+	  	weight: 3
+	  });
+	  firstpolyline.addTo(map);*/
+	//plyline.addTo(map);
+	//map.fitBounds(polyline.getBounds());
+	//var nav = new mapboxgl.Navigation();
+	//plyline.addTo(map);
+
+	
+</script>
+<!-- <div id="controls"><script>map.addControl(new mapboxgl.Navigation({postion: 'bottom-right'}));</script></div>
+ -->
+</body>
+
+</html>
