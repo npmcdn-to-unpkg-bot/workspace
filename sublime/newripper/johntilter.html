@@ -37,6 +37,37 @@ var map = new mapboxgl.Map({
     zoom: 6
 });
 
+// map.on('load', function () {
+//     map.addSource("route", {
+//         "type": "geojson",
+//         "data": {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [31.1, -19.9],
+//                     [31.1, -15.9]
+//                 ]
+//             }
+//         }
+//     });
+
+//     map.addLayer({
+//         "id": "route",
+//         "type": "line",
+//         "source": "route",
+//         "layout": {
+//             "line-join": "round",
+//             "line-cap": "round"
+//         },
+//         "paint": {
+//             "line-color": "red",
+//             "line-width": 8
+//         }
+//     });
+// });
+
 var switcher = 0;
 
 function tilter() {
@@ -51,6 +82,41 @@ function tilter() {
         switcher = 0;
     }
 }
+
+//map.easeTo({pitch: 60});
+console.log(map);
+//alert(map.getPitch());
+
+// map.on('load', function () {
+//     map.addSource('maine', {
+//         'type': 'geojson',
+//         'data': {
+//             'type': 'Feature',
+//             'properties': {
+//                 'name': 'Maine'
+//             },
+//             'geometry': {
+//                 'type': 'Polygon',
+//                 'coordinates': [[[28.9351496365956,3.59956999999928],
+//                 [28.9351496365956,4.68333883505744],
+//                 [30.0161717146857,4.68333883505744],
+
+//                 [28.9351496365956,3.59956999999928]]]
+//             }
+//         }
+//     });
+
+//     map.addLayer({
+//         'id': 'route',
+//         'type': 'fill',
+//         'source': 'maine',
+//         'layout': {},
+//         'paint': {
+//             'fill-color': 'red',
+//             'fill-opacity': 0.8
+//         }
+//     });
+// });
 
 map.on('load', function () {
     map.addSource('maine', {
@@ -98,9 +164,10 @@ map.on('load', function () {
                 'type': 'Polygon',
                 'coordinates': [[
                     //eastwest         northsouth 
-                    [28.9351496365956,-12.59956999999928], // bottom left
+                    [28.9351496365956,1.59956999999928], // bottom left
                     [29.9351496365956,1.59956999999928], // bottom right
                     [29.9351496365956,2.59956999999928], // upper right
+
                     [28.9351496365956,2.59956999999928]]] // upper left
             }
         }

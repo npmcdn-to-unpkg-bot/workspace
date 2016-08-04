@@ -6,7 +6,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+ <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -36,6 +36,7 @@
 <body>
 <div id='tilter' onclick="tilter();"></div>
 <div id='map'></div>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
 var map = new mapboxgl.Map({
@@ -178,7 +179,8 @@ var tranny = map.on('load', function () {
 });
 
 
-console.log(map)
+//console.log(map)
+
 
 
 /*****************************************************************************************/
@@ -209,7 +211,33 @@ map.on('mousemove', function (e) {
 
 /*****************************markers************************************/
 
-// L.marker is a low-level marker constructor in Leaflet.
+
+
+
+var marker = new mapboxgl.Marker('<div><img src="observations 2.png"</img></div>').setLngLat([31.5000, -13.1667]).addTo('map');
+marker.addTo(map);
+
+map.on('load', function() {
+
+    map.addSource('pikachu', {
+        'type': 'image',
+        'url': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'coordinates': [
+            [28.168945, -17.14185], //western most points
+            [30.168945, -17.14185],
+            [28.168945, -17.54185], //western most points
+            [30.168945, -17.54185] 
+        ]
+    }); 
+
+    map.addLayer({
+        'id': 'pikachu',
+        'source': 'pikachu'
+    });
+
+});
+
+map.addLayer('pikachu');
 
 </script>
 

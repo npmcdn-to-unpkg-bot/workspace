@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>dumb map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+  .wrap {
+  margin-top: 00px;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+.cube {
+  margin: auto;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(60deg);
+}
+
+.cube > div {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100px;
+  width: 100px;
+  opacity: 0.9;
+  background-color: pink;
+  border: solid 1px #eeeeee;
+  color: #ffffff;
+
+}
+.front {
+  transform: translateZ(00px);
+}
+
+.back {
+  transform: translateZ(-100px) rotateY(180deg);
+}
+
+.right {
+  transform: rotateY(-270deg) translateX(100px); /*or 90deg*/
+  transform-origin: top right;
+}
+
+.left {
+  transform: rotateY(270deg) translateX(-100px); /*or -90deg*/
+  transform-origin: center left;
+}
+
+.top {
+  transform: rotateX(-270deg) translateY(-100px) translateZ(100px); /*or 90deg*/
+  transform-origin: top center;
+}
+
+.bottom {
+  transform: rotateX(270deg) translateY(100px); /*or -90deg*/
+  transform-origin: bottom center;
+}
+</style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+	var map = L.mapbox.map('map', 'mapbox.streets')
+	    .setView([40, -74.50], 9);
+
+	var myIcon=L.divIcon({html: '<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>'});
+	var mico = L.marker([40, -74.50],{icon: myIcon});
+
+	map.on('zoomend', function(){
+		var currentZoom = map.getZoom();
+
+	    if(currentZoom < 15){
+		        //marker.setIcon(icon);
+		        map.addLayer(mico);
+		    } 
+		if (currentZoom >= 15) { 
+		    	map.removeLayer(mico);
+		    }
+	});
+           
+
+</script>
+</body>
+</html>
