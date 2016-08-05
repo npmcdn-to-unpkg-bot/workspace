@@ -6,9 +6,65 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+
+        .wrap {
+  margin-top: 150px;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+.cube {
+  margin: auto;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(60deg);
+}
+
+.cube > div {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100px;
+  width: 100px;
+  opacity: 0.9;
+  background-color: pink;
+  border: solid 1px #eeeeee;
+  color: #ffffff;
+
+}
+.front {
+  transform: translateZ(100px);
+}
+
+.back {
+  transform: translateZ(-100px) rotateY(180deg);
+}
+
+.right {
+  transform: rotateY(-270deg) translateX(100px); /*or 90deg*/
+  transform-origin: top right;
+}
+
+.left {
+  transform: rotateY(270deg) translateX(-100px); /*or -90deg*/
+  transform-origin: center left;
+}
+
+.top {
+  transform: rotateX(-270deg) translateY(-100px); /*or 90deg*/
+  transform-origin: top center;
+}
+
+.bottom {
+  transform: rotateX(270deg) translateY(100px); /*or -90deg*/
+  transform-origin: bottom center;
+}
     </style>
 </head>
 <body>
@@ -17,52 +73,24 @@
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
 var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
-    center: [-74.50, 40], // starting position
-    zoom: 9 // starting zoom
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [31, -15],
+    zoom: 3
 });
 
+var popup = new mapboxgl.Popup({closeOnClick: false})
+    .setLngLat([31, -15])
+    .setHTML('<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>')
+    .addTo(map);
 
-// add geojson data as a new source
-map.addSource("symbols", {
-    "type": "geojson",
-    "data": {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {
-                    "label": "my stupid marker"
-                },
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -74.50,
-                        40
 
-                    ]
-                }
-            }
-        ]
-    }
+var kissmyrut = '<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>';
+
+var mypts = d3.csv("pts.csv", function(d){
+  console.log(d);
 });
-
-// add source as a layer and apply some styles
-map.addLayer({
-    "id": "symbols",
-    "interactive": true,
-    "type": "symbol",
-    "source": "symbols",
-    "layout": {
-        "icon-image": "marker-15"
-    },
-    "paint": {}
-});
-// var marker = new mapboxgl.Marker()
-//   .setLngLat([-74.5, 40])
-//   .addTo(map);
-
+console.log(mypts);
 </script>
 
 </body>
