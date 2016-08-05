@@ -84,29 +84,34 @@
   transform: rotateX(270deg) translateY(100px); /*or -90deg*/
   transform-origin: bottom center;
 }
+
+.marker { background: red; display: block; height: 20px; width: 20px; }
+    #info {
+        display: block;
+        position: relative;
+        margin: 0px auto;
+        width: 50%;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #222;
+        background: #fff;
+    }
+
     </style>
 
 </head>
 <body>
 
-<!-- <div class="wrap">
-    <div class="cube">
-        <div class="front">front</div>
-        <div class="back">back</div>
-        <div class="top">top</div>
-        <div class="bottom">bottom</div>
-        <div class="left">left</div>
-        <div class="right">right</div>
-    </div>
-</div> -->
-
-d3.select("")
 
 <div id='tilter' onclick="tilter();"></div>
 <div id='map'></div>
+
+<pre id='info'></pre>
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.js'></script>
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
 var map = new mapboxgl.Map({
@@ -121,7 +126,17 @@ var map = new mapboxgl.Map({
 });
 
 
+/***********************************marker**********************************/
+var el = document.createElement('button');
+    el.className = 'marker';
 
+var marker = new mapboxgl.Marker(el)
+  .setLngLat([27.34, -10.95])
+  .addTo(map);
+/***************************************************************************/
+
+
+/********************************tilter function****************************/
 var switcher = 0;
 function tilter() {
     
@@ -135,9 +150,17 @@ function tilter() {
         switcher = 0;
     }
 }
+/*****************************************************************************/
+
+
+map.on('zoomend', function(e) {
+
+    console.log(e)
+})
 
 
 var dat = map.on('load', function () {
+
     map.addSource('stratum1', {
         'type': 'geojson',
         'data': {
@@ -149,7 +172,7 @@ var dat = map.on('load', function () {
                 'type': 'Polygon',
                 'coordinates': [[
                     //eastwest         northsouth 
-                    [32.868945, -11.04185], //western most points
+                    [37.9062, 0.0236], //western most points
                     [33.368945, -12.14185], // bottom right
                     [32.1168945, -13.14185],
                     [31.1168945, -14.14185],
@@ -172,12 +195,14 @@ var dat = map.on('load', function () {
 
 /****************************************transects************************************************/
 
+
+
+
 //console.log(map)
 
 // var dis = new Marker(element: 'map.getCanvas(<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>)');
 
-/*****************************************************************************************/
-
+/*****************************************stratum disappear************************************************/
 map.on('click', function (e) {
 
 
@@ -195,42 +220,17 @@ map.on('click', function (e) {
     }
 });
 
-// Use the same approach as above to indicate that the symbols are clickable
-// by changing the cursor style to 'pointer'.
+/********************************mouse hover - lng lat ********************************/
 map.on('mousemove', function (e) {
-    var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
-    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+    document.getElementById('info').innerHTML =
+        // e.point is the x, y coordinates of the mousemove event relative
+        // to the top-left corner of the map
+        JSON.stringify(e.point) + '<br />' +
+            // e.lngLat is the longitude, latitude geographical position of the event
+        JSON.stringify(e.lngLat);
 });
+/*************************************************************************************/
 
-/*****************************markers************************************/
-
-
-
-
-var marker = new mapboxgl.Marker('<div><img src="observations 2.png"</img></div>').setLngLat([31.5000, -13.1667]).addTo('map');
-marker.addTo(map);
-
-map.on('load', function() {
-
-    map.addSource('pikachu', {
-        'type': 'image',
-        'url': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-        'coordinates': [
-            [28.168945, -17.14185], //western most points
-            [30.168945, -17.14185],
-            [28.168945, -17.54185], //western most points
-            [30.168945, -17.54185] 
-        ]
-    }); 
-
-    map.addLayer({
-        'id': 'pikachu',
-        'source': 'pikachu'
-    });
-
-});
-
-map.addLayer('pikachu');
 
 </script>
 
