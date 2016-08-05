@@ -78,11 +78,11 @@
 	map.on('zoomend', function(){
 		var currentZoom = map.getZoom();
 
-	    if(currentZoom < 15){
+	    if(currentZoom > 12){
 		        //marker.setIcon(icon);
 		        map.addLayer(mico);
 		    } 
-		if (currentZoom >= 15) { 
+		if (currentZoom <= 12) { 
 		    	map.removeLayer(mico);
 		    }
 	});

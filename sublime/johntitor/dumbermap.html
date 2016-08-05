@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Dumber Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+ <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #tilter {
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    margin-left: 50px;
+    margin-top: 50px;
+    background-color: #656565;
+    position: absolute;
+    z-index: 10;
+}
+.marker {
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-image: url('images/observations 2.png');
+}
+
+#poach-5mg0hh {
+	fill-color: green;
+}
+.wrap {
+  margin-top: 150px;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  display: inline-block;
+}
+.cube {
+  margin: auto;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(60deg);
+}
+
+.cube > div {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100px;
+  width: 100px;
+  opacity: 0.9;
+  background-color: pink;
+  border: solid 1px #eeeeee;
+  color: #ffffff;
+
+}
+.front {
+  transform: translateZ(100px);
+}
+
+.back {
+  transform: translateZ(-100px) rotateY(180deg);
+}
+
+.right {
+  transform: rotateY(-270deg) translateX(100px); /*or 90deg*/
+  transform-origin: top right;
+}
+
+.left {
+  transform: rotateY(270deg) translateX(-100px); /*or -90deg*/
+  transform-origin: center left;
+}
+
+.top {
+  transform: rotateX(-270deg) translateY(-100px); /*or 90deg*/
+  transform-origin: top center;
+}
+
+.bottom {
+  transform: rotateX(270deg) translateY(100px); /*or -90deg*/
+  transform-origin: bottom center;
+}
+    </style>
+
+</head>
+<body>
+
+<!-- <div class="wrap">
+    <div class="cube">
+        <div class="front">front</div>
+        <div class="back">back</div>
+        <div class="top">top</div>
+        <div class="bottom">bottom</div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+</div> -->
+
+d3.select("")
+
+<div id='tilter' onclick="tilter();"></div>
+<div id='map'></div>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.js'></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',
+    maxZoom: 10,
+    minZoom: 3.2,
+    center: [31.5000, -13.1667],
+    pitch: 00, // pitch in degrees
+    bearing: 00, // bearing in degrees
+    zoom: 4
+});
+
+
+
+var switcher = 0;
+function tilter() {
+    
+    if (switcher % 2 == 0) {
+        map.easeTo({pitch: 60});
+    } else {
+        map.easeTo({pitch: 00});
+    }
+    switcher++;
+    if (switcher % 2 == 0) {
+        switcher = 0;
+    }
+}
+
+
+var dat = map.on('load', function () {
+    map.addSource('stratum1', {
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {
+                'name': 'Statum1'
+            },
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [[
+                    //eastwest         northsouth 
+                    [32.868945, -11.04185], //western most points
+                    [33.368945, -12.14185], // bottom right
+                    [32.1168945, -13.14185],
+                    [31.1168945, -14.14185],
+                    [31.1168945, -12.54185] //western most points
+                    ]] 
+            }
+        }
+    });
+    map.addLayer({
+        'id': 'stratum1', // need differnt id's
+        'type': 'fill',
+        'source': 'stratum1',
+        'layout': {},
+        'paint': {
+            'fill-color': '#6D76BF',
+            'fill-opacity': 1
+        }
+    });
+});
+
+/****************************************transects************************************************/
+
+//console.log(map)
+
+// var dis = new Marker(element: 'map.getCanvas(<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>)');
+
+/*****************************************************************************************/
+
+map.on('click', function (e) {
+
+
+    // Use queryRenderedFeatures to get features at a click event's point
+    // Use layer option to avoid getting results from other layers
+    var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
+    // if there are features within the given radius of the click event,
+    // fly to the location of the click event
+    if (features.length) {
+        // Get coordinates from the symbol and center the map on those coordinates
+        map.flyTo({zoom: 6, center: features[0].geometry.coordinates[0][0]});
+        map.removeLayer('stratum1');
+        //map.addLayer('transects');
+        
+    }
+});
+
+// Use the same approach as above to indicate that the symbols are clickable
+// by changing the cursor style to 'pointer'.
+map.on('mousemove', function (e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+});
+
+/*****************************markers************************************/
+
+
+
+
+var marker = new mapboxgl.Marker('<div><img src="observations 2.png"</img></div>').setLngLat([31.5000, -13.1667]).addTo('map');
+marker.addTo(map);
+
+map.on('load', function() {
+
+    map.addSource('pikachu', {
+        'type': 'image',
+        'url': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
+        'coordinates': [
+            [28.168945, -17.14185], //western most points
+            [30.168945, -17.14185],
+            [28.168945, -17.54185], //western most points
+            [30.168945, -17.54185] 
+        ]
+    }); 
+
+    map.addLayer({
+        'id': 'pikachu',
+        'source': 'pikachu'
+    });
+
+});
+
+map.addLayer('pikachu');
+
+</script>
+
+</body>
+</html>

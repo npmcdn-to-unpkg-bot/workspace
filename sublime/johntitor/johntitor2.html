@@ -22,9 +22,10 @@
 }
 .marker {
     border: none;
-    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
     cursor: pointer;
-    background-image: url('images/observations 2.png');
 }
 
 #poach-5mg0hh {
@@ -101,82 +102,82 @@ var dat = map.on('load', function () {
 });
 
 /****************************************transects************************************************/
-var tranny = map.on('load', function () {
-    map.addSource("linorino1", { // needs to match below id
-        "type": "geojson",
-        "data": {
-            "features": [{
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [28.168945, -17.14185], //western most points
-                    [30.168945, -17.14185]  // eastern most point
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [28.168945, -17.24185], //western most points
-                    [30.168945, -17.24185] // eastern most point
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [28.168945, -17.34185], //western most points
-                    [30.168945, -17.34185] // eastern most point
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [28.168945, -17.44185], //western most points
-                    [30.168945, -17.44185] // eastern most point
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [28.168945, -17.54185], //western most points
-                    [30.168945, -17.54185] // eastern most point
-                ]
-            }
-        }]
-        }
-    });
+// var tranny = map.on('load', function () {
+//     map.addSource("linorino1", { // needs to match below id
+//         "type": "geojson",
+//         "data": {
+//             "features": [{
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [28.168945, -17.14185], //western most points
+//                     [30.168945, -17.14185]  // eastern most point
+//                 ]
+//             }
+//         },
+//         {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [28.168945, -17.24185], //western most points
+//                     [30.168945, -17.24185] // eastern most point
+//                 ]
+//             }
+//         },
+//         {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [28.168945, -17.34185], //western most points
+//                     [30.168945, -17.34185] // eastern most point
+//                 ]
+//             }
+//         },
+//         {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [28.168945, -17.44185], //western most points
+//                     [30.168945, -17.44185] // eastern most point
+//                 ]
+//             }
+//         },
+//         {
+//             "type": "Feature",
+//             "properties": {},
+//             "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+//                     [28.168945, -17.54185], //western most points
+//                     [30.168945, -17.54185] // eastern most point
+//                 ]
+//             }
+//         }]
+//         }
+//     });
 
-    map.addLayer({
-        "id": "linorino1", //layer id
-        "type": "line",
-        "source": "linorino1", // needs to match the above add source id
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "blue",
-            "line-width": 3
-        }
-    });
-});
+//     map.addLayer({
+//         "id": "linorino1", //layer id
+//         "type": "line",
+//         "source": "linorino1", // needs to match the above add source id
+//         "layout": {
+//             "line-join": "round",
+//             "line-cap": "round"
+//         },
+//         "paint": {
+//             "line-color": "blue",
+//             "line-width": 3
+//         }
+//     });
+// });
 
 
 //console.log(map)
@@ -212,32 +213,73 @@ map.on('mousemove', function (e) {
 /*****************************markers************************************/
 
 
+var geojson = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "message": "Foo",
+                "iconSize": [60, 60]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    28.62,
+                    -15.024695711685304
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "message": "Bar",
+                "iconSize": [50, 50]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    30.2158203125,
+                    -15.97189158092897
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "message": "Baz",
+                "iconSize": [40, 40]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    31.29223632812499,
+                    -17.28151823530889
+                ]
+            }
+        }
+    ]
+};
 
 
-var marker = new mapboxgl.Marker('<div><img src="observations 2.png"</img></div>').setLngLat([31.5000, -13.1667]).addTo('map');
-marker.addTo(map);
+// add markers to map
+geojson.features.forEach(function(marker) {
+    // create an img element for the marker
+    var el = document.createElement('button');
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(https://placekitten.com/g/' + marker.properties.iconSize.join('/') + '/)';
+    el.style.width = marker.properties.iconSize[0];
+    el.style.height = marker.properties.iconSize[1];
 
-map.on('load', function() {
-
-    map.addSource('pikachu', {
-        'type': 'image',
-        'url': 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-        'coordinates': [
-            [28.168945, -17.14185], //western most points
-            [30.168945, -17.14185],
-            [28.168945, -17.54185], //western most points
-            [30.168945, -17.54185] 
-        ]
-    }); 
-
-    map.addLayer({
-        'id': 'pikachu',
-        'source': 'pikachu'
+    el.addEventListener('click', function() {
+        window.alert(marker.properties.message);
     });
 
+    // add marker to map
+    new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(map);
 });
-
-map.addLayer('pikachu');
 
 </script>
 
