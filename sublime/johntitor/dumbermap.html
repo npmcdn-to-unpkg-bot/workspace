@@ -26,7 +26,6 @@
     cursor: pointer;
     background-image: url('images/observations 2.png');
 }
-
 #poach-5mg0hh {
 	fill-color: green;
 }
@@ -44,7 +43,6 @@
   transform-style: preserve-3d;
   transform: rotateX(-30deg) rotateY(60deg);
 }
-
 .cube > div {
   position: absolute;
   box-sizing: border-box;
@@ -55,36 +53,29 @@
   background-color: pink;
   border: solid 1px #eeeeee;
   color: #ffffff;
-
 }
 .front {
   transform: translateZ(100px);
 }
-
 .back {
   transform: translateZ(-100px) rotateY(180deg);
 }
-
 .right {
   transform: rotateY(-270deg) translateX(100px); /*or 90deg*/
   transform-origin: top right;
 }
-
 .left {
   transform: rotateY(270deg) translateX(-100px); /*or -90deg*/
   transform-origin: center left;
 }
-
 .top {
   transform: rotateX(-270deg) translateY(-100px); /*or 90deg*/
   transform-origin: top center;
 }
-
 .bottom {
   transform: rotateX(270deg) translateY(100px); /*or -90deg*/
   transform-origin: bottom center;
 }
-
 .marker { background: red; display: block; height: 20px; width: 20px; }
     #info {
         display: block;
@@ -99,7 +90,6 @@
         color: #222;
         background: #fff;
     }
-
     </style>
 
 </head>
@@ -124,18 +114,17 @@ var map = new mapboxgl.Map({
     bearing: 00, // bearing in degrees
     zoom: 4
 });
-
-
 /***********************************marker**********************************/
-var el = document.createElement('button');
-    el.className = 'marker';
+var el = document.createElement('div');
+    el.innerHTML = " '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>' "
+    // el.className = "wrap cube front back top bottom left right";
 
 var marker = new mapboxgl.Marker(el)
   .setLngLat([27.34, -10.95])
   .addTo(map);
+
+  // "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 /***************************************************************************/
-
-
 /********************************tilter function****************************/
 var switcher = 0;
 function tilter() {
@@ -151,16 +140,11 @@ function tilter() {
     }
 }
 /*****************************************************************************/
-
-
 map.on('zoomend', function(e) {
-
     console.log(e)
 })
 
-
 var dat = map.on('load', function () {
-
     map.addSource('stratum1', {
         'type': 'geojson',
         'data': {
@@ -192,20 +176,11 @@ var dat = map.on('load', function () {
         }
     });
 });
-
 /****************************************transects************************************************/
-
-
-
-
 //console.log(map)
-
 // var dis = new Marker(element: 'map.getCanvas(<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>)');
-
 /*****************************************stratum disappear************************************************/
 map.on('click', function (e) {
-
-
     // Use queryRenderedFeatures to get features at a click event's point
     // Use layer option to avoid getting results from other layers
     var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
@@ -219,7 +194,6 @@ map.on('click', function (e) {
         
     }
 });
-
 /********************************mouse hover - lng lat ********************************/
 map.on('mousemove', function (e) {
     document.getElementById('info').innerHTML =
@@ -230,6 +204,15 @@ map.on('mousemove', function (e) {
         JSON.stringify(e.lngLat);
 });
 /*************************************************************************************/
+
+
+
+/******************************************************markers**************************************/
+// var myIcon=L.divIcon({html: '<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>'});
+
+
+
+// "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 
 
 </script>
