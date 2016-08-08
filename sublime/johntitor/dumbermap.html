@@ -215,9 +215,12 @@ map.on('click', function (e) {
 });
 /********************************mouse hover - lng lat ********************************/
 map.on('mousemove', function (e) {
+    //console.log(e);
+
     document.getElementById('info').innerHTML =
         // e.point is the x, y coordinates of the mousemove event relative
         // to the top-left corner of the map
+
         JSON.stringify(e.point) + '<br />' +
             // e.lngLat is the longitude, latitude geographical position of the event
         JSON.stringify(e.lngLat) + '<br />' +
@@ -228,14 +231,49 @@ map.on('mousemove', function (e) {
 /*************************************************************************************/
 
 map.on('rotatestart', function(e) {
-  var b = document.getElementById('tilter');
-  //var bs = b.getStyle("background-color");
-if (map.dragRotate.isActive()) {
-  var degrees =  "rotateY(" + map.getBearing() + "deg)";
-  alert(degrees);
-  var peepee = document.getElementsByClassName('cube')[0];
-  peepee.style.transform=degrees;
-};
+    var rot = false;
+    //console.log(e.originalEvent['layerX']);
+    if (!map.dragRotate.isActive()) {
+        
+    var gosh = this.on('mousemove', function(e){
+        rot = map.dragRotate.isActive();
+        var started = e.point['x'];
+        console.log(map.dragRotate.isActive());
+    });
+    };
+    var x1 = e.originalEvent['layerX'];
+    var y1 = e.originalEvent['layerY'];
+
+    var b = document.getElementById('tilter');
+
+    map.on('rotateend', function (e) {
+        rot = map.dragRotate.isActive();
+        var x2 = e.originalEvent['layerX'];
+        var y2 = e.originalEvent['layerY'];
+        console.log(rot);
+
+
+        console.log("x1: " + x1 + " x2: " + x2);
+
+        var deltaX = x2 - x1;
+        var deltaY = y2 - y1;
+        var rad = Math.atan2(deltaY, deltaX);
+
+        var deg = rad * (180 / Math.PI);
+        //88.2425390733
+        console.log(deg );
+
+
+    });
+
+      //var bs = b.getStyle("background-color");
+    if (map.dragRotate.isActive()) {
+       //alert("boogers" + JSON.stringify(e.point));
+      var degrees =  "rotateY(" + map.getBearing() + "deg)";
+      //alert(degrees);
+      var peepee = document.getElementsByClassName('cube')[0];
+      peepee.style.transform=degrees;
+    };
   //alert(b.style.background-color);
   //alert('yessssssśs');
   //$('e.map').innerHTML="weeeeeeeeeeeeee";
@@ -245,6 +283,19 @@ if (map.dragRotate.isActive()) {
   // mymy.style.transform=rotateX(90deg);
   //document.getElementById('tilter').innerHTML="redaijsdnoifnaosdinofinso";
 //   };
+
+
+// var x1 = e.point['x'];
+// var x2 = e.point['x'];
+// console.log("x1: " + x1 + " x2: " + x2);
+// console.log(e.point['y']);
+// console.log(e.point['x'] + e.point['y']);
+
+// var deltaX = x2 - x1;
+// var deltaY = y2 - y1;
+// var rad = Math.atan2(deltaY, deltaX);
+
+// var deg = rad * (180 / Math.PI);
 });
 
 
