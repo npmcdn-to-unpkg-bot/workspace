@@ -30,53 +30,38 @@
 #poach-5mg0hh {
 	fill-color: green;
 }
-.wrap {
-  margin-top: 150px;
-  perspective: 1000px;
-  perspective-origin: 50% 50%;
-  display: inline-block;
+.circle {
+    position: absolute;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
 }
-.cube {
-  margin: auto;
-  position: relative;
-  height: 200px;
-  width: 200px;
-  transform-style: preserve-3d;
-  transform: rotateX(-30deg) rotateY(60deg);
- 
+
+.red.circle {
+    background-color: pink;
+    top: 0;
+    left: 50px;
 }
-.cube > div {
-  position: absolute;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 100px;
-  width: 100px;
-  opacity: 0.9;
-  background-color: pink;
-  border: solid 1px #eeeeee;
-  color: #ffffff;
+
+.blue.circle {
+    background-color: purple;
+    top: 200px;
+    left: 50px;
 }
-.front {
-  transform: translateZ(100px);
+
+.rectangle {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 100px;
+    height: 200px;
+    display: inline-block;
+    background-color: purple;
 }
-.back {
-  transform: translateZ(-100px) rotateY(180deg);
-}
-.right {
-  transform: rotateY(-270deg) translateX(100px); /*or 90deg*/
-  transform-origin: top right;
-}
-.left {
-  transform: rotateY(270deg) translateX(-100px); /*or -90deg*/
-  transform-origin: center left;
-}
-.top {
-  transform: rotateX(-270deg) translateY(-100px); /*or 90deg*/
-  transform-origin: top center;
-}
-.bottom {
-  transform: rotateX(270deg) translateY(100px); /*or -90deg*/
-  transform-origin: bottom center;
+
+.transformed {
+     transform: matrix3d(1, 0, 0, 0, 0, 0.52, -0.85, 0, 0, 0.85, 0.52, 0, 0, 0, 0, 1);
 }
 .marker { background: red; display: block; height: 20px; width: 20px; }
     #info {
@@ -119,7 +104,7 @@ var map = new mapboxgl.Map({
 });
 /***********************************marker**********************************/
 var el = document.createElement('div');
-    el.innerHTML = " <div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div> "
+    el.innerHTML = " <div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> "
     // el.className = "wrap cube front back top bottom left right";
 
 var marker = new mapboxgl.Marker(el)
@@ -267,13 +252,17 @@ map.on('rotatestart', function(e) {
     });
 
       //var bs = b.getStyle("background-color");
-    if (map.dragRotate.isActive()) {
-       //alert("boogers" + JSON.stringify(e.point));
-      var degrees =  "rotateY(" + map.getBearing() + "deg)";
-      //alert(degrees);
-      var peepee = document.getElementsByClassName('cube')[0];
-      peepee.style.transform=degrees;
-    };
+
+
+    // if (map.dragRotate.isActive()) {
+    //    //alert("boogers" + JSON.stringify(e.point));
+    //   var degrees =  "rotateY(" + map.getBearing() + "deg)";
+    //   //alert(degrees);
+    //   var peepee = document.getElementsByClassName('cube')[0];
+    //   peepee.style.transform=degrees;
+    // };
+
+
   //alert(b.style.background-color);
   //alert('yessssssśs');
   //$('e.map').innerHTML="weeeeeeeeeeeeee";
