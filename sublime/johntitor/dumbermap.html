@@ -6,6 +6,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="jquery.js"></script>
  <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
     <style>
         body { margin:0; padding:0; }
@@ -42,6 +43,7 @@
   width: 200px;
   transform-style: preserve-3d;
   transform: rotateX(-30deg) rotateY(60deg);
+ 
 }
 .cube > div {
   position: absolute;
@@ -109,19 +111,36 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',
     maxZoom: 10,
     minZoom: 3.2,
-    center: [31.5000, -13.1667],
+    center: [28.5000, -17.1667],
     pitch: 00, // pitch in degrees
     bearing: 00, // bearing in degrees
-    zoom: 4
+    zoom: 4,
+    dragRotate: true
 });
 /***********************************marker**********************************/
 var el = document.createElement('div');
-    el.innerHTML = " '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>' "
+    el.innerHTML = " <div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div> "
     // el.className = "wrap cube front back top bottom left right";
 
 var marker = new mapboxgl.Marker(el)
   .setLngLat([27.34, -10.95])
   .addTo(map);
+
+
+
+var draggy = map.dragRotate.isActive();
+console.log(draggy);
+
+
+
+
+//   var le = document.createElement('div');
+//     le.innerHTML = " <div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div> "
+//     le.className = "wrap cube front back top bottom left right";
+
+// var marker = new mapboxgl.Marker(le)
+//   .setLngLat([31.34, -17.95])
+//   .addTo(map);
 
   // "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 /***************************************************************************/
@@ -201,10 +220,32 @@ map.on('mousemove', function (e) {
         // to the top-left corner of the map
         JSON.stringify(e.point) + '<br />' +
             // e.lngLat is the longitude, latitude geographical position of the event
-        JSON.stringify(e.lngLat);
+        JSON.stringify(e.lngLat) + '<br />' +
+
+        map.getBearing()
+        ;
 });
 /*************************************************************************************/
 
+map.on('rotatestart', function(e) {
+  var b = document.getElementById('tilter');
+  //var bs = b.getStyle("background-color");
+if (map.dragRotate.isActive()) {
+  var degrees =  "rotateY(" + map.getBearing() + "deg)";
+  alert(degrees);
+  var peepee = document.getElementsByClassName('cube')[0];
+  peepee.style.transform=degrees;
+};
+  //alert(b.style.background-color);
+  //alert('yessssssśs');
+  //$('e.map').innerHTML="weeeeeeeeeeeeee";
+// if (!e.dragRotate.isActive()) {
+//   alert('nooooooo!!!!');
+  // var mymy = document.querySelector('.cube');
+  // mymy.style.transform=rotateX(90deg);
+  //document.getElementById('tilter').innerHTML="redaijsdnoifnaosdinofinso";
+//   };
+});
 
 
 /******************************************************markers**************************************/
