@@ -1,0 +1,306 @@
+<html>
+<title>tilt and rotate</title>
+<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+<script src='turf.min.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
+<script src='jquery.js'></script>
+
+<style type="text/css">
+	.leaflet-container {
+	background:none;
+}
+
+.leaflet-control {
+	display:none;
+}
+.stage * {
+	-moz-transition:-moz-transform 0.75s;
+	-moz-transform-style:preserve-3d;
+	-webkit-transition:-webkit-transform 0.75s;
+	-webkit-transform-style:preserve-3d;
+}
+
+.checkbox-pill input[type=checkbox]:checked + label {
+	background-color: #3bb2d0;
+	color:white;
+}
+
+.subhead {
+	padding:12px 10px;
+	color:#3887be;
+}
+.full {
+	height:100%;
+	position:absolute;
+}
+
+.sidebar {
+	left:0;
+	width:350px;
+}
+
+/* .stage is combined full fill-dark in the the div that holds the the tilter and map */
+.stage {
+	left:0px;
+	right:0px;
+	overflow:hidden;
+
+	/* this handled aligning the perspective for the tilt */
+	-webkit-perspective:1200;
+	-moz-perspective:1200px;
+}
+
+.map {
+	width:100%;
+	height:100%;
+	margin:20% 30%;
+	transform-origin: 0%; /*origin to center of page*/
+	position:relative;
+	overflow:visible;
+}
+
+/*.marker {
+	size: large;
+	-webkit-transform:translateZ(0.1px);
+	-moz-transform:translateZ(0.1px);
+	
+}*/
+
+.bottomaxis {
+	-webkit-transform-origin:bottom center;
+	-moz-transform-origin:bottom center;
+}
+.tiltmap {
+	-webkit-transform:rotateX(60deg);
+	-moz-transform:rotateX(60deg);
+
+}
+/* perspective is now depricated. It is handled by the tilt map. */
+.perspective {
+	-webkit-perspective:1200;
+	-moz-perspective:1200px;
+}
+
+/*.flipmarkers {
+    -moz-transform:rotateX(90deg);
+    -moz-transform-origin:0% 0%;
+    -moz-transform-style:preserve-3d;
+    -webkit-transform:rotateX(90deg);
+    -webkit-transform-origin:0% 0%;
+    transform-style:preserve-3d;
+}*/
+
+.tilter {
+}
+
+.rotating, .pivotmarker {
+	-moz-transition:-webkit-transform 1.5s;
+	-webkit-transition:-webkit-transform 1.5s;
+}
+
+#tilter {
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    margin-left: 250px;
+    margin-top: 50px;
+    background-color: #656565;
+    position: absolute;
+    z-index: 9;
+}
+/*
+#tiltmarker {
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    margin-left: 500px;
+    margin-top: 50px;
+    background-color: #CCCCCC;
+    position: absolute;
+    z-index: 10;
+}*/
+
+/************************For the 3d circle******************************************/
+
+.circle {
+    position: absolute;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    -webkit-transform: translateZ(50px);
+     opacity: 0.8;
+
+}
+
+.red.circle {
+    background-color: pink;
+    top: 0;
+    left: 50px;
+    -webkit-transform: translateZ(50px);
+    opacity: 0.8;
+
+}
+
+.blue.circle {
+    background-color: purple;
+    top: 200px;
+    left: 50px;
+    -webkit-transform: translateZ(50px);
+    opacity: 0.8;
+
+}
+
+.rectangle {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 100px;
+    height: 200px;
+    display: inline-block;
+    background-color: purple;
+    -webkit-transform: translateZ(50px);
+    opacity: 0.8;
+}
+
+.transformed {
+     transform: matrix3d(1, 0, 0, 0, 0, 0.52, -0.85, 0, 0, 0.85, 0.52, 0, 0, 0, 0, 1);
+     
+}
+/************************************************************************************/
+</style>
+<body style="background-color:#2A2A2A;">
+<!-- <div class='sidebar full' style="background-color:transparent;">
+	<div class='pad2 checkbox-pill'>
+	<div class='small subhead'>SET UP THE MAP</div>
+	  <input type='checkbox' id='tiltmap' onclick="$('.tilter').toggleClass('tiltmap')">
+	  <label for='tiltmap' class='pad1 icon check col12'>Tilt the map back </label>
+	  <input type='checkbox' id='perspective' onclick="$('.stage').toggleClass('perspective')">
+	  <label for='perspective' class='pad1 icon check col12'>Add some perspective</label>
+	 <div class='small subhead'>SET UP THE MARKERS</div>
+	  <input type='checkbox' id='bottomaxis' onclick="$('.marker').toggleClass('bottomaxis')">
+	  <label for='bottomaxis' class='pad1 icon check col12'>Move the origin of rotation</label>
+	  <input type='checkbox' id='flipmarkers' onclick="$('.marker').toggleClass('flipmarkers')">
+	  <label for='flipmarkers' class='pad1 icon check col12'>Flip the markers up</label>
+	 <div class='small subhead'>INTERACTIVITY</div>
+	  <input type='checkbox' id='rotate' onclick="$('.map').attr('style','').toggleClass('rotating')">
+	  <label for='rotate' class='pad1 icon check col12'>Add map rotation</label>
+	  <input type='checkbox' id='keep' onclick="$('.marker img').attr('style','').toggleClass('pivotmarker')">
+	  <label for='keep' class='pad1 icon check col12'>Keep markers pointing forward</label>
+	</div>
+</div> -->
+
+<div class='stage full fill-dark' style="background-color:#2A2A2A;">
+	<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
+	<div id='tiltmarker' onclick="$('.marker').toggleClass('flipmarkers')"></div>
+	<div class='tilter'>
+		<div class='map' id='map'>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+	var map = L.mapbox.map('map', 'mapbox.streets',{
+	    zoomControl: false})
+	    .setView([-19.9, 35.1], 6);
+
+
+	// var polys = [
+	// 	[-19.9, 31.1],
+	// 	[-17.9, 32.1],
+	// 	[-15.9, 31.1]
+	// ];
+
+
+	// var polyline = L.polyline(polys, {color: "red", zIndex: 1});
+	// map.addLayer(polyline)
+		
+	var myIcon = L.divIcon({
+		className:'column',
+		html:"<div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ",
+		iconSize: [155, 166],
+	});
+
+	var coords=[[-19.9, 31.1],[-17.9, 32.1],[-15.9, 31.1]]
+		coords.forEach(function(n){
+		L.marker(n,{icon:myIcon}).addTo(map);
+	})
+
+	var el = document.createElement('div');
+    el.innerHTML = " <div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ";
+
+
+	// var plyline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red'}).addTo(map).bringToFront();
+	// var myIco = L.divIcon({
+	// 	className:'',
+	// 	html: "<div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ",
+	// 	iconSize: [35, 46]
+	// });
+	// var coords=[[-18.9, 31.1],[-16.9, 32.1],[-15.9, 25.1]]
+	// 	coords.forEach(function(n){
+	// 	L.marker(n,{icon:myIco}).addTo(map);
+	// })
+	// var angle=10;
+	// window.setInterval(function(){
+	// 	$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
+	// 	if ($('.rotating').length>0) $('.pivotmarker').attr('style','-webkit-transform: rotateY('+angle+'deg);-moz-transform: rotateY('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
+	// 	angle=angle*-1;
+	// },1500);
+
+	var getPxBounds = map.getPixelBounds;
+	map.getPixelBounds = function () {
+    	var bounds = getPxBounds.call(this);
+	    // ... extend the bounds
+	    bounds.min.x=bounds.min.x-1000;
+	    bounds.min.y=bounds.min.y-1000;
+	    bounds.max.x=bounds.max.x+1000;
+	    bounds.max.y=bounds.max.y+1000;
+    return bounds;
+	};
+
+
+	var angle=0;
+	var xdrag=0;
+	var isDown=false;
+	var xpos=0;
+	//map rotation
+	$('body').on('mousedown','.tilter',
+	  function(e){
+	        xpos=e.pageX;
+	        window.isDown = true;
+	    })
+	    .on('mousemove','.tilter', function(e){
+	      if(isDown){
+	        xdrag =(xpos-e.pageX)/4;
+	        $('.map').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)*(1)%360+'deg)').attr('display', 'block');
+	        $('.flipmarkers').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
+	      }
+	    })
+	  .on('mouseup','.tilter',function(){
+	    isDown=false;
+	    angle = angle+xdrag;
+	  });
+/*	  var nav = new mapboxgl.Navigation({position: 'bottom-left'});
+	  nav. addTo(map);*/
+/*	  var pointA = new L.Latlng(-13.1, 31.1);
+	  var pointB = new L.Latlng(-17.1, 32.1);
+	  var pointList = [pointA, pointB];
+	  var firstpolyline = new L.Polyline(pointList {
+	  	color: 'blue',
+	  	weight: 3
+	  });
+	  firstpolyline.addTo(map);*/
+	//plyline.addTo(map);
+	//map.fitBounds(polyline.getBounds());
+	//var nav = new mapboxgl.Navigation();
+	//plyline.addTo(map);
+	
+</script>
+<!-- <div id="controls"><script>map.addControl(new mapboxgl.Navigation({postion: 'bottom-right'}));</script></div>
+ -->
+</body>
+
+</html>

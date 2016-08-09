@@ -7,6 +7,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
     <script src="jquery.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
  <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
     <style>
         body { margin:0; padding:0; }
@@ -91,6 +92,11 @@
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+
+
+
+
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/tsukihall/cirdnvbc00019gfm4j3wlx5dm',
@@ -102,6 +108,78 @@ var map = new mapboxgl.Map({
     zoom: 4,
     dragRotate: true
 });
+
+var geojson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -33.83789062499999,
+              60.37042901631508
+            ],
+            [
+              -39.814453125,
+              55.825973254619015
+            ],
+            [
+              -33.662109375,
+              53.90433815627468
+            ],
+            [
+              -25.839843749999996,
+              55.87531083569679
+            ],
+            [
+              -21.708984375,
+              59.84481485969105
+            ],
+            [
+              -29.619140624999996,
+              61.39671887310411
+            ],
+            [
+              -33.83789062499999,
+              60.37042901631508
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+};
+
+var bbox = turf.extent(geojson);
+
+map.on('load', function(){
+    map.addSource('my-geojson', {
+        "type": "geojson",
+        "data": geojson
+    });
+
+    map.addLayer({
+        "id": "geojsonLayer",
+        "type": "fill",
+        "source": "my-geojson",
+        "paint": {
+            "fill-color": "#000fff"
+        }
+    });
+});
+
+
+// function fit() {
+//     map.fitBounds(bbox, {padding: 20});
+// }
+
+// map.setData(bbox);
+
+// map.addLayer(bbox);
 /***********************************marker**********************************/
 var el = document.createElement('div');
     el.innerHTML = " <div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> "
@@ -130,6 +208,7 @@ console.log(draggy);
   // "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 /***************************************************************************/
 /********************************tilter function****************************/
+
 var switcher = 0;
 function tilter() {
     
@@ -143,6 +222,7 @@ function tilter() {
         switcher = 0;
     }
 }
+
 /*****************************************************************************/
 map.on('zoomend', function(e) {
     console.log(e)

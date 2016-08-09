@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #fitBounds {
+            background-color: #ee8a65;
+            font-family: Helvetica, Arial, Sans-Serif;
+            color: #fff;
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            padding: 0.7em;
+            border-radius: 0.2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div id='fitBounds' onclick='fit()'>fit to polygon</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGFuc3dpY2siLCJhIjoieUZiWmwtVSJ9.0cPQywdbPVmvHiHJ6NwdXA';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v8', //stylesheet location
+    center: [-74.50, 40], // starting position
+    zoom: 9 // starting zoom
+});
+
+var geojson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -33.83789062499999,
+              60.37042901631508
+            ],
+            [
+              -39.814453125,
+              55.825973254619015
+            ],
+            [
+              -33.662109375,
+              53.90433815627468
+            ],
+            [
+              -25.839843749999996,
+              55.87531083569679
+            ],
+            [
+              -21.708984375,
+              59.84481485969105
+            ],
+            [
+              -29.619140624999996,
+              61.39671887310411
+            ],
+            [
+              -33.83789062499999,
+              60.37042901631508
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+};
+
+var bbox = turf.extent(geojson);
+
+map.on('load', function(){
+    map.addSource('my-geojson', {
+        "type": "geojson",
+        "data": geojson
+    });
+
+    map.addLayer({
+        "id": "geojsonLayer",
+        "type": "fill",
+        "source": "my-geojson",
+        "paint": {
+            "fill-color": "#000fff"
+        }
+    });
+});
+
+function fit() {
+    map.fitBounds(bbox, {padding: 20});
+}
+
+</script>
+
+</body>
+</html>
