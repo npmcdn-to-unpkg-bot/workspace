@@ -6,6 +6,9 @@
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css' rel='stylesheet' />
 <script src='jquery.js'></script>
 
+<!-- <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+ --><!-- <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+ -->
 <style type="text/css">
 	.leaflet-container {
 	background:none;
@@ -97,7 +100,7 @@
 
 .rotating, .pivotmarker {
 	-moz-transition:-webkit-transform 1.5s;
-	-webkit-transition:-webkit-transform 1.5s;
+	-webkit-transition:-webkit-transform 2.5s;
 }
 
 #tilter {
@@ -187,6 +190,7 @@
 </style>
 <body style="background-color:#2A2A2A;">
 
+
 <div class='stage full fill-dark' style="background-color:#2A2A2A;">
 	
 
@@ -199,10 +203,16 @@
 	</div>
 </div>
 
-
+<script src='turf.min.js'></script>
 <script>
+
 /***********************************Map******************************************/
+
+
 	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+	
+
 
 	var sw = L.latLng(-17.5, 29),
 		ne = L.latLng(-4, 37),
@@ -218,9 +228,86 @@
 	var map = L.mapbox.map('map', 'mapbox.streets',{
 	    zoomControl: true,
 		maxBounds: bounds,
-		minZoom: 6,
-		maxZoom: 10})
-	    .setView([-19.9, 31.1], 8);
+		minZoom: 1, //should be set to 6 or so
+		maxZoom: 10});
+	    //.setView([-19.9, 31.1], 8);
+
+	var bbox = [-11.5, 29, -14, 35 ];
+	var gridd = turf.hexGrid(bbox, 50, 'kilometers');
+ 	gridd.features.map(function(grid) {
+		grid.properties = {
+			"fill": "blue",
+			"stroke": "red",
+			"stroke-width:": 1
+		};
+		return grid;
+	});
+ 	map.featureLayer.setGeoJSON(gridd)
+	 console.log(map.featureLayer.setGeoJSON(gridd));
+	 //mapp.addLayer(gridd.features);
+
+	 var myIcon = L.icon({
+	iconUrl: 'https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-5-5688836437835776-scta.jpg',
+	iconSize: [38, 95],
+	iconAnchor: [29, -11.5]
+});
+
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+
+/*************************************Hex Grid***************************************/
+// var poly = turf.bboxPolygon(bbox);
+// map.addLayer(poly);
+
+// var layerGroup = L.layerGroup().addTo(map);
+
+// console.log(gridd);
+
+
+// var hexy = L.geoJson(gridd).eachLayer(function(l) {
+// 	l.setStyle(l.feature.properties);
+// }).addTo(layerGroup);
+
+// console.log(hexy);
+
+
+
+ // grid.features.forEach(function(cell) {
+
+ //    //var pt_count = cell.properties.pt_count;
+
+ //    var _nocount = cell._nocount = {};
+ //    _nocount.weight = 3;
+ //    _nocount.color = 'red';
+ //    _nocount.fillOpacity = 0;
+
+
+ //    cell.properties = cell._nohex;
+ //  });
+
+ //   var hex = L.geoJson(grid)
+ //      .eachLayer(function(l) {
+ //          l.setStyle(l.feature.properties);
+ //      })
+ //      .addTo(layerGroup);
+
+ //  L.geoJson(pts, {
+ //    pointToLayer: function(feature, latlng) {
+ //      return L.circleMarker(latlng, {
+ //        radius: 0.5,
+ //        fillColor:'#ffffff',
+ //        fillOpacity:1,
+ //        stroke: false
+ //      });
+ //    }
+ //  }).addTo(layerGroup);
+
+ //  map.setStyle(l.feature['_nocount']);
+
+// var hex = L.geoJson(grid).addTo(layerGroup);
+// console.log(layerGroup);
+
+
+
 
 /***********************************Marker******************************************/
 	var myIcon = L.divIcon({
@@ -228,6 +315,8 @@
 		html:"<div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ",
 		iconSize: [155, 166],
 	});
+
+	
 
 	var coords=[[-15.9, 31.1],[-7.9, 32.1],[-8.9, 32.1]]
 		coords.forEach(function(n){
@@ -272,20 +361,20 @@
 	  });
 
 /***********************************mouse hover******************************************/
-map.on('mousemove', function (e) {
-    //console.log(e);
+// map.on('mousemove', function (e) {
+//     //console.log(e);
 
-    document.getElementById('info').innerHTML =
-        // e.point is the x, y coordinates of the mousemove event relative
-        // to the top-left corner of the map
+//     document.getElementById('info').innerHTML =
+//         // e.point is the x, y coordinates of the mousemove event relative
+//         // to the top-left corner of the map
 
-        JSON.stringify(e.point) + '<br />' +
-            // e.lngLat is the longitude, latitude geographical position of the event
-        JSON.stringify(e.lngLat) + '<br />' +
+//         JSON.stringify(e.point) + '<br />' +
+//             // e.lngLat is the longitude, latitude geographical position of the event
+//         JSON.stringify(e.lngLat) + '<br />' +
 
-        map.getBearing();
+//         map.getBearing();
         
-});	
+// });	
 
 </script>
 </body>
