@@ -58,6 +58,7 @@
 	transform-origin: 0%; /*origin to center of page*/
 	position:relative;
 	overflow:visible;
+	transition: all 2.25;
 }
 
 /*.marker {
@@ -103,11 +104,11 @@
     width: 250px;
     height: 50px;
     border-radius: 20px;
-    margin-left: 250px;
-    margin-top: 50px;
+    margin-left: 25px;
+    margin-top: 25px;
     background-color: #656565;
     position: absolute;
-    z-index: 9;
+    z-index: 999;
 }
 /*
 #tiltmarker {
@@ -120,6 +121,20 @@
     position: absolute;
     z-index: 10;
 }*/
+
+    #info {
+        display: block;
+        position: relative;
+        margin: 0px auto;
+        width: 50%;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #222;
+        background: #fff;
+    }
 
 /************************For the 3d circle******************************************/
 
@@ -171,85 +186,56 @@
 /************************************************************************************/
 </style>
 <body style="background-color:#2A2A2A;">
-<!-- <div class='sidebar full' style="background-color:transparent;">
-	<div class='pad2 checkbox-pill'>
-	<div class='small subhead'>SET UP THE MAP</div>
-	  <input type='checkbox' id='tiltmap' onclick="$('.tilter').toggleClass('tiltmap')">
-	  <label for='tiltmap' class='pad1 icon check col12'>Tilt the map back </label>
-	  <input type='checkbox' id='perspective' onclick="$('.stage').toggleClass('perspective')">
-	  <label for='perspective' class='pad1 icon check col12'>Add some perspective</label>
-	 <div class='small subhead'>SET UP THE MARKERS</div>
-	  <input type='checkbox' id='bottomaxis' onclick="$('.marker').toggleClass('bottomaxis')">
-	  <label for='bottomaxis' class='pad1 icon check col12'>Move the origin of rotation</label>
-	  <input type='checkbox' id='flipmarkers' onclick="$('.marker').toggleClass('flipmarkers')">
-	  <label for='flipmarkers' class='pad1 icon check col12'>Flip the markers up</label>
-	 <div class='small subhead'>INTERACTIVITY</div>
-	  <input type='checkbox' id='rotate' onclick="$('.map').attr('style','').toggleClass('rotating')">
-	  <label for='rotate' class='pad1 icon check col12'>Add map rotation</label>
-	  <input type='checkbox' id='keep' onclick="$('.marker img').attr('style','').toggleClass('pivotmarker')">
-	  <label for='keep' class='pad1 icon check col12'>Keep markers pointing forward</label>
-	</div>
-</div> -->
 
 <div class='stage full fill-dark' style="background-color:#2A2A2A;">
-	<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
-	<div id='tiltmarker' onclick="$('.marker').toggleClass('flipmarkers')"></div>
-	<div class='tilter'>
-		<div class='map' id='map'>
+	
+
+	<div id='mapstage'>
+		<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
+		<div class='tilter'>
+			<div class='map' id='map'></div>
 		</div>
+		<pre id='info'></pre>
 	</div>
 </div>
 
 
 <script>
+/***********************************Map******************************************/
 	L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3	duNzMifQ.YXqXdaozTI35jm069S01qw';
+
+	var sw = L.latLng(-17.5, 29),
+		ne = L.latLng(-4, 37),
+		bounds = L.latLngBounds(sw,ne);
+
+	// var map = L.map('map', {
+	// 	center: [-19.1, 31.1],
+	// 	zoom: 13,
+	// 	inertia: false,
+	// 	maxBounds: bounds
+	// });
+
 	var map = L.mapbox.map('map', 'mapbox.streets',{
-	    zoomControl: false})
-	    .setView([-19.9, 35.1], 6);
+	    zoomControl: true,
+		maxBounds: bounds,
+		minZoom: 6,
+		maxZoom: 10})
+	    .setView([-19.9, 31.1], 8);
 
-
-	// var polys = [
-	// 	[-19.9, 31.1],
-	// 	[-17.9, 32.1],
-	// 	[-15.9, 31.1]
-	// ];
-
-
-	// var polyline = L.polyline(polys, {color: "red", zIndex: 1});
-	// map.addLayer(polyline)
-		
+/***********************************Marker******************************************/
 	var myIcon = L.divIcon({
 		className:'column',
 		html:"<div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ",
 		iconSize: [155, 166],
 	});
 
-	var coords=[[-19.9, 31.1],[-17.9, 32.1],[-15.9, 31.1]]
+	var coords=[[-15.9, 31.1],[-7.9, 32.1],[-8.9, 32.1]]
 		coords.forEach(function(n){
 		L.marker(n,{icon:myIcon}).addTo(map);
 	})
 
-	var el = document.createElement('div');
-    el.innerHTML = " <div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ";
 
-
-	// var plyline = L.polyline([[-13.1, 31.1], [-15.4, 29.9], [-19.3, 32.5]], {color: 'red'}).addTo(map).bringToFront();
-	// var myIco = L.divIcon({
-	// 	className:'',
-	// 	html: "<div class = 'container'><div class = 'rectangle'></div><div class = 'blue transformed circle'></div><div class = 'red transformed circle'></div> ",
-	// 	iconSize: [35, 46]
-	// });
-	// var coords=[[-18.9, 31.1],[-16.9, 32.1],[-15.9, 25.1]]
-	// 	coords.forEach(function(n){
-	// 	L.marker(n,{icon:myIco}).addTo(map);
-	// })
-	// var angle=10;
-	// window.setInterval(function(){
-	// 	$('.rotating').attr('style','-webkit-transform:rotateZ('+angle+'deg);-moz-transform:rotateZ('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
-	// 	if ($('.rotating').length>0) $('.pivotmarker').attr('style','-webkit-transform: rotateY('+angle+'deg);-moz-transform: rotateY('+angle+'deg);-moz-transition:-moz-transform 1.75s;');
-	// 	angle=angle*-1;
-	// },1500);
-
+/**********************************seems to set initial bounds*****************************/
 	var getPxBounds = map.getPixelBounds;
 	map.getPixelBounds = function () {
     	var bounds = getPxBounds.call(this);
@@ -261,11 +247,12 @@
     return bounds;
 	};
 
-
+/***********************************rotating the map******************************************/
 	var angle=0;
 	var xdrag=0;
 	var isDown=false;
 	var xpos=0;
+
 	//map rotation
 	$('body').on('mousedown','.tilter',
 	  function(e){
@@ -283,24 +270,24 @@
 	    isDown=false;
 	    angle = angle+xdrag;
 	  });
-/*	  var nav = new mapboxgl.Navigation({position: 'bottom-left'});
-	  nav. addTo(map);*/
-/*	  var pointA = new L.Latlng(-13.1, 31.1);
-	  var pointB = new L.Latlng(-17.1, 32.1);
-	  var pointList = [pointA, pointB];
-	  var firstpolyline = new L.Polyline(pointList {
-	  	color: 'blue',
-	  	weight: 3
-	  });
-	  firstpolyline.addTo(map);*/
-	//plyline.addTo(map);
-	//map.fitBounds(polyline.getBounds());
-	//var nav = new mapboxgl.Navigation();
-	//plyline.addTo(map);
-	
+
+/***********************************mouse hover******************************************/
+map.on('mousemove', function (e) {
+    //console.log(e);
+
+    document.getElementById('info').innerHTML =
+        // e.point is the x, y coordinates of the mousemove event relative
+        // to the top-left corner of the map
+
+        JSON.stringify(e.point) + '<br />' +
+            // e.lngLat is the longitude, latitude geographical position of the event
+        JSON.stringify(e.lngLat) + '<br />' +
+
+        map.getBearing();
+        
+});	
+
 </script>
-<!-- <div id="controls"><script>map.addControl(new mapboxgl.Navigation({postion: 'bottom-right'}));</script></div>
- -->
 </body>
 
 </html>
