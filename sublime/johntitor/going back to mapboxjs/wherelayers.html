@@ -189,22 +189,19 @@
 /************************************************************************************/
 </style>
 <body style="background-color:#2A2A2A;">
-</div>
-	<div id="separate">
-		<div class='map' id='map'></div>
-	</div>
-</div>
+
 
 <div class='stage full fill-dark' style="background-color:#2A2A2A;">
 	<div id='mapstage'>
-
-		<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
-		<div class='tilter'>
 			
 
-		</div>
-		<!-- <pre id='info'></pre> -->
+		<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"><div class='map' id='map'></div></div>
+		<div class='tilter'></div>
+			
 	</div>
+
+		<!-- <pre id='info'></pre> -->
+</div>
 
 
 <script src='turf.min.js'></script>
@@ -231,12 +228,6 @@
 		ne = L.latLng(-4, 37),
 		bounds = L.latLngBounds(sw,ne);
 
-	// var map = L.map('map', {
-	// 	center: [-19.1, 31.1],
-	// 	zoom: 13,
-	// 	inertia: false,
-	// 	maxBounds: bounds
-	// });
 
 	var map = L.mapbox.map('map', 'mapbox.streets',{
 	    zoomControl: true,
@@ -257,60 +248,6 @@
 	});
 
 L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
-
-/*************************************Hex Grid***************************************/
-// var poly = turf.bboxPolygon(bbox);
-// map.addLayer(poly);
-
-// var layerGroup = L.layerGroup().addTo(map);
-
-// console.log(gridd);
-
-
-// var hexy = L.geoJson(gridd).eachLayer(function(l) {
-// 	l.setStyle(l.feature.properties);
-// }).addTo(layerGroup);
-
-// console.log(hexy);
-
-
-
- // grid.features.forEach(function(cell) {
-
- //    //var pt_count = cell.properties.pt_count;
-
- //    var _nocount = cell._nocount = {};
- //    _nocount.weight = 3;
- //    _nocount.color = 'red';
- //    _nocount.fillOpacity = 0;
-
-
- //    cell.properties = cell._nohex;
- //  });
-
- //   var hex = L.geoJson(grid)
- //      .eachLayer(function(l) {
- //          l.setStyle(l.feature.properties);
- //      })
- //      .addTo(layerGroup);
-
- //  L.geoJson(pts, {
- //    pointToLayer: function(feature, latlng) {
- //      return L.circleMarker(latlng, {
- //        radius: 0.5,
- //        fillColor:'#ffffff',
- //        fillOpacity:1,
- //        stroke: false
- //      });
- //    }
- //  }).addTo(layerGroup);
-
- //  map.setStyle(l.feature['_nocount']);
-
-// var hex = L.geoJson(grid).addTo(layerGroup);
-// console.log(layerGroup);
-
-
 
 
 /***********************************Marker******************************************/
