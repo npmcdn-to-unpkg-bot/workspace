@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>new clean build</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<style>
+#map { 
+  width:100%;
+  height:100%;
+  transform-origin: 0%; /*origin to center of page*/
+  position:relative;
+  overflow:visible; /*this handles the rotateX and not pulling past the bottom of the screen*/
+  transition: all 2.25; 
+}
+.leaflet-container {
+  background:none;
+}
+
+.leaflet-control {
+  display:none;
+}
+#tilter {width: 250px;
+  height: 50px;
+  border-radius: 20px;
+  margin-left: 25px;
+  margin-top: 25px;
+  background-color: #656565;
+  position: absolute;
+  z-index: 999;
+}
+#maprotor{
+  -moz-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out;
+  position:absolute; 
+  top:-0%; 
+  bottom:0; 
+  width:100%; 
+  height: 100%;
+  overflow:visible;
+  -moz-transition:-moz-transform 0.75s;
+  -moz-transform-style:preserve-3d;
+  -webkit-transition:-webkit-transform 0.75s;
+  -webkit-transform-style:preserve-3d;
+}
+      
+#maprotor.tilted {
+  -moz-transform:rotateX(60deg);
+  -webkit-transform:rotateX(60deg)
+}
+.tilted {
+  -webkit-transform:rotateX(60deg);
+  -moz-transform:rotateX(60deg);
+  -webkit-perspective:1200;
+  -moz-perspective:1200px;
+  }
+
+</style>
+</head>
+<body style="background-color: #2A2A2A">
+
+<div id="maprotor" >
+  <div id="map"></div>
+</div>
+
+<div id="tilter" onclick="tiltyabish()"></div>
+
+
+<script type="text/javascript">
+L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+// MIT-licensed code by Benjamin Becquet
+// https://github.com/bbecquet/Leaflet.PolylineDecorator
+
+
+var map = L.mapbox.map('map', 'mapbox.emerald', {
+    tileSize: 10240,
+    minZoom: 6,
+    maxZoom: 10,
+    keyboard: false,
+    zoomControl: false
+}).setView([-19.9, 31.1], 8);
+
+
+var getPxBounds = map.getPixelBounds;
+map.getPixelBounds = function () {
+    var bounds = getPxBounds.call(this);
+    // ... extend the bounds
+    bounds.min.x=bounds.min.x-1000;
+    bounds.min.y=bounds.min.y-1000;
+    bounds.max.x=bounds.max.x+1000;
+    bounds.max.y=bounds.max.y+1000;
+    return bounds;
+};
+
+
+
+function tiltyabish() {
+
+  // map.fitBounds({
+  //   paddingTopLeft:[150,50],
+  //   paddingBottomRight:[150,50]
+  // });
+
+  $('#maprotor').toggleClass('tilted');
+  //alert('hey you clicked me');
+};
+
+
+</script>
+
+
+</body>
+</html>

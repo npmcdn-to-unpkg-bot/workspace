@@ -189,20 +189,12 @@
 /************************************************************************************/
 </style>
 <body style="background-color:#2A2A2A;">
-</div>
-	<div id="separate">
-		<div class='map' id='map'></div>
-	</div>
-</div>
+
 
 <div class='stage full fill-dark' style="background-color:#2A2A2A;">
 	<div id='mapstage'>
-
 		<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
-		<div class='tilter'>
-			
-
-		</div>
+		<div class='tilter'><div class='map' id='map'></div></div>
 		<!-- <pre id='info'></pre> -->
 	</div>
 
@@ -250,13 +242,6 @@
 	console.log(map.featureLayer.setGeoJSON(gridd));
 	 //mapp.addLayer(gridd.features);
 
-	var myIcon = L.icon({
-		iconUrl: 'https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-5-5688836437835776-scta.jpg',
-		iconSize: [38, 95],
-		iconAnchor: [29, -11.5]
-	});
-
-L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
 
 /*************************************Hex Grid***************************************/
 // var poly = turf.bboxPolygon(bbox);
@@ -326,6 +311,15 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
 		coords.forEach(function(n){
 		L.marker(n,{icon:myIcon}).addTo(map);
 	})
+
+	var mycon = L.divIcon({
+		iconUrl: 'https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-5-5688836437835776-scta.jpg',
+		iconSize: [38, 95],
+		iconAnchor: [29, -11.5]
+	});
+
+L.marker([50.505, 30.57], {icon:mycon}).addTo(map);
+
 
 
 /**********************************seems to set initial bounds*****************************/

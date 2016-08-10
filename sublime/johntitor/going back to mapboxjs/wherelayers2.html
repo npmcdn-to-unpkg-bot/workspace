@@ -1,5 +1,5 @@
 <html>
-<title>where layers</title>
+<title>2wherelayers</title>
 <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <script src='turf.min.js'></script>
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script>
@@ -62,6 +62,7 @@
 	position:relative;
 	overflow:visible;
 	transition: all 2.25;
+	
 }
 
 /*.marker {
@@ -78,8 +79,15 @@
 .tiltmap {
 	-webkit-transform:rotateX(60deg);
 	-moz-transform:rotateX(60deg);
-	-moz-transition:-webkit-transform 1.5s;
-	-webkit-transition:-webkit-transform 2.5s;
+	-webkit-perspective:1200;
+	-moz-perspective:1200px;
+	-moz-transition:-moz-transform 0.75s;
+	-moz-transform-style:preserve-3d;
+	-webkit-transition:-webkit-transform 0.75s;
+	-webkit-transform-style:preserve-3d;
+	height:100%;
+	left:0px;
+	right:0px;
 
 }
 /* perspective is now depricated. It is handled by the tilt map. */
@@ -184,17 +192,22 @@
     opacity: 0.8;
 }
 
-.transformed {         /*first one is height*/
-     transform: matrix3d(10, 0, 0, 0, 0, 0.52, -0.85, 0, 0, 0.85, 0.52, 0, 0, 0, 0, 1);
+.transformed {
+     transform: matrix3d(1, 0, 0, 0, 0, 0.52, -0.85, 0, 0, 0.85, 0.52, 0, 0, 0, 0, 1);
      
 }
 /************************************************************************************/
 </style>
 <body style="background-color:#2A2A2A;">
-<div id='trust'>
-	<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
-	<div class='map tilter' id='map'></div>
-</div>
+
+
+<div class='stage full fill-dark' style="background-color:#2A2A2A;">
+	<div id='mapstage'>
+		<div id='tilter' onclick="$('.tilter').toggleClass('tiltmap')"></div>
+		<div class='tilter'><div class='map' id='map'></div></div>
+		<!-- <pre id='info'></pre> -->
+	</div>
+
 
 <script src='turf.min.js'></script>
 <script>
@@ -209,7 +222,7 @@
  	gridd.features.map(function(grid) {
 		grid.properties = {
 			"fill": "blue",
-			"stroke": "#0b0859",
+			"stroke": "red",
 			"stroke-width:": 1
 		};
 		return grid;
@@ -220,6 +233,12 @@
 		ne = L.latLng(-4, 37),
 		bounds = L.latLngBounds(sw,ne);
 
+	// var map = L.map('map', {
+	// 	center: [-19.1, 31.1],
+	// 	zoom: 13,
+	// 	inertia: false,
+	// 	maxBounds: bounds
+	// });
 
 	var map = L.mapbox.map('map', 'mapbox.streets',{
 	    zoomControl: true,
@@ -229,22 +248,73 @@
 	    //.setView([-19.9, 31.1], 8);
 
 
- 	var gridlay = map.featureLayer.setGeoJSON(gridd);
- 	gridlay.addTo(map);
+ 	map.featureLayer.setGeoJSON(gridd);
 	console.log(map.featureLayer.setGeoJSON(gridd));
 	 //mapp.addLayer(gridd.features);
 
-	var mycon = L.icon({
+	var myIcon = L.icon({
 		iconUrl: 'https://www.google.com/logos/doodles/2016/2016-doodle-fruit-games-day-5-5688836437835776-scta.jpg',
 		iconSize: [38, 95],
 		iconAnchor: [29, -11.5]
 	});
 
-L.marker([50.505, 30.57], {icon: mycon}).addTo(map);
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
 
-gridlay.on('click', function(e){
+/*************************************Hex Grid***************************************/
+// var poly = turf.bboxPolygon(bbox);
+// map.addLayer(poly);
 
-});
+// var layerGroup = L.layerGroup().addTo(map);
+
+// console.log(gridd);
+
+
+// var hexy = L.geoJson(gridd).eachLayer(function(l) {
+// 	l.setStyle(l.feature.properties);
+// }).addTo(layerGroup);
+
+// console.log(hexy);
+
+
+
+ // grid.features.forEach(function(cell) {
+
+ //    //var pt_count = cell.properties.pt_count;
+
+ //    var _nocount = cell._nocount = {};
+ //    _nocount.weight = 3;
+ //    _nocount.color = 'red';
+ //    _nocount.fillOpacity = 0;
+
+
+ //    cell.properties = cell._nohex;
+ //  });
+
+ //   var hex = L.geoJson(grid)
+ //      .eachLayer(function(l) {
+ //          l.setStyle(l.feature.properties);
+ //      })
+ //      .addTo(layerGroup);
+
+ //  L.geoJson(pts, {
+ //    pointToLayer: function(feature, latlng) {
+ //      return L.circleMarker(latlng, {
+ //        radius: 0.5,
+ //        fillColor:'#ffffff',
+ //        fillOpacity:1,
+ //        stroke: false
+ //      });
+ //    }
+ //  }).addTo(layerGroup);
+
+ //  map.setStyle(l.feature['_nocount']);
+
+// var hex = L.geoJson(grid).addTo(layerGroup);
+// console.log(layerGroup);
+
+
+
+
 /***********************************Marker******************************************/
 	var myIcon = L.divIcon({
 		className:'column',
@@ -279,7 +349,7 @@ gridlay.on('click', function(e){
 	var xpos=0;
 
 	//map rotation
-	$('body').on('mousedown','.map ',
+	$('body').on('mousedown','.tilter',
 	  function(e){
 	        xpos=e.pageX;
 	        window.isDown = true;
@@ -287,10 +357,8 @@ gridlay.on('click', function(e){
 	    .on('mousemove','.tilter', function(e){
 	      if(isDown){
 	        xdrag =(xpos-e.pageX)/4;
-	        $('.tilter').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)*(1)%360+'deg)').attr('display', 'block');
-
-	        //Do something about this//////////////////////////////////////////////////////////////////
-	        // $('.flipmarkers').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
+	        $('.map').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)*(1)%360+'deg)').attr('display', 'block');
+	        $('.flipmarkers').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
 	      }
 	    })
 	  .on('mouseup','.tilter',function(){
