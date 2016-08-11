@@ -11,10 +11,12 @@
 #map { 
   width:100%;
   height:100%;
-  transform-origin: 0%; /*origin to center of page*/
+  transform-origin: 50%; /*origin to center of page*/
   position:relative;
   overflow:visible; /*this handles the rotateX and not pulling past the bottom of the screen*/
-  transition: all 2.25; 
+  transition: all 2.25;
+  -webkit-transform: translateZ(1px);
+  transform: translateZ(1px); 
 }
 .leaflet-container {
   background:none;
@@ -49,18 +51,14 @@
       
 #maprotor.tilted {
   -moz-transform:rotateX(60deg);
-  -webkit-transform:rotateX(60deg)
+  -webkit-transform:rotateX(60deg);
 }
 .tilted {
-  -webkit-transform:rotateX(60deg);
-  -moz-transform:rotateX(60deg);
-  -webkit-perspective:1200;
-  -moz-perspective:1200px;
   }
 
 </style>
 </head>
-<body style="background-color: #2A2A2A">
+<body style="background-color: #2A2A2A;">
 
 <div id="maprotor" >
   <div id="map"></div>
@@ -71,8 +69,6 @@
 
 <script type="text/javascript">
 L.mapbox.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
-// MIT-licensed code by Benjamin Becquet
-// https://github.com/bbecquet/Leaflet.PolylineDecorator
 
 
 var map = L.mapbox.map('map', 'mapbox.emerald', {
@@ -83,30 +79,65 @@ var map = L.mapbox.map('map', 'mapbox.emerald', {
     zoomControl: false
 }).setView([-19.9, 31.1], 8);
 
-
+/***********************Loads tiles outside of the frame: can make the map float in outer spaaaaaaaaaace!****************************/
 var getPxBounds = map.getPixelBounds;
 map.getPixelBounds = function () {
     var bounds = getPxBounds.call(this);
     // ... extend the bounds
     bounds.min.x=bounds.min.x-1000;
-    bounds.min.y=bounds.min.y-1000;
+    //bounds.min.y=bounds.min.y-1000;
     bounds.max.x=bounds.max.x+1000;
     bounds.max.y=bounds.max.y+1000;
     return bounds;
 };
 
 
-
+/***********************************tilting the map*******************************************/
+var isTilted = false;
 function tiltyabish() {
 
-  // map.fitBounds({
-  //   paddingTopLeft:[150,50],
-  //   paddingBottomRight:[150,50]
+  // map.fitBounds(map.featureLayer.setGeoJSON(turf.linestring(resampledRoute)).getBounds(),{
+  //     paddingTopLeft:[150,50],
+  //     paddingBottomRight:[150,50]
   // });
 
   $('#maprotor').toggleClass('tilted');
   //alert('hey you clicked me');
+
+  //disable panning
+  if(isTilted) {
+    map.dragging.enable();
+    isTilted = false; //fix this. hacky hackerson
+  } else {
+    map.dragging.disable();
+    isTilted = true; //fix this hacky hackerson
+  }
+
 };
+
+/***********************************rotating the map******************************************/
+  var angle=0;
+  var xdrag=0;
+  var isDown=false;
+  var xpos=0;
+
+//map rotation
+$('body').on('mousedown','#maprotor.tilted',
+  function(e){
+        xpos=e.pageX;
+        window.isDown = true;
+    })
+    .on('mousemove','#maprotor.tilted', function(e){
+      if(isDown){
+        xdrag =(xpos-e.pageX)/4;
+        $('#map').attr('style', '-webkit-transform:rotateZ('+(angle+xdrag)%360+'deg)');
+        //$('.elevmarker').attr('style', '-webkit-transform:rotateX(90deg) rotateY('+(angle+xdrag)*(-1)%360+'deg)')
+      }
+    })
+  .on('mouseup','#maprotor.tilted',function(){
+    isDown=false;
+    angle = angle+xdrag;
+  });
 
 
 </script>
