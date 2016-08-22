@@ -260,11 +260,36 @@ $('body').on('mousedown','#maprotor.tilted',
     bounds = L.latLngBounds(sw,ne);
 
 /**********************************Adding a geojson layer****************************************/
+// var myLayer = L.mapbox.featureLayer()
+//   .loadURL('surveyArea.geojson')
+//   .on('ready', function() {
+//     myLayer.eachLayer(function(layer) {
+//       map.fitBounds(myLayer.getBounds());
+//       layer.bindPopup(layer.features.properties.name);
+//     });
+//   })
+//   .addTo(map);
+
+// var featureLayer = L.mapbox.featureLayer().addTo(map);
+// featureLayer.loadURL('surveyArea.geojson');
+
+
+
+// var surveyArea
+// var surveyArea = map.setGeoJSON('surveyArea.geojson');
+
+// L.geojson(surveyArea).addTo(map);
+
+
+
+// var geojsonLayer = new L.GeoJSON.AJAX("surveyArea.geojson"); 
+// console.log(geojsonLayer);      
+// geojsonLayer.addTo(map);
 
 var featureLayer = L.mapbox.featureLayer()
     .loadURL('surveyArea.geojson')
     .addTo(map);
-console.log(featureLayer);
+
 
 </script>
 
