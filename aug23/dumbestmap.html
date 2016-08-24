@@ -7,6 +7,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
     <script src="jquery.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
  <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
     <style>
         body { margin:0; padding:0; }
@@ -132,7 +133,7 @@ h3 {
 #intro {
   position: fixed;
   top: 35%;
-  left: 35%;
+  left: 31%;
   color: white;
   font-family: "Arial Black", Gadget, sans-serif;
 }
@@ -209,6 +210,33 @@ h3 {
         color: #222;
         background: #fff;
     }
+/******************************************this is for the d3*****************************/
+    .bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis text {
+  fill: white;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: white;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
     </style>
 
 </head>
@@ -387,7 +415,143 @@ function stage_graphs() {
     graph_stage.remove();
     graphs_up = false;
   } else {
-    $('body').append("<div id='graph_stage'></div>");
+    $('body').append("<div id='graph_stage'><div id='bar_graph_holder' style='margin-left: 20%; margin-top: 15%'></div></div>");
+
+ // console.log("I'm here");
+ //  var margin = {top: 20, right: 20, bottom: 70, left: 40},
+ //      width = 600 - margin.left - margin.right,
+ //      height = 300 - margin.top - margin.bottom;
+
+ //  // Parse the date / time
+ //  var parseDate = d3.time.format("%Y-%m").parse;
+
+ //  var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+ //  var y = d3.scale.linear().range([height, 0]);
+
+ //  var xAxis = d3.svg.axis()
+ //      .scale(x)
+ //      .orient("bottom")
+ //      .tickFormat(d3.time.format("%Y-%m"));
+
+ //  var yAxis = d3.svg.axis()
+ //      .scale(y)
+ //      .orient("left")
+ //      .ticks(10);
+
+ //  var svg = d3.select("#bar_graph_holder").append("svg")
+ //      .attr("width", width + margin.left + margin.right)
+ //      .attr("height", height + margin.top + margin.bottom)
+ //    .append("g")
+ //      .attr("transform", 
+ //            "translate(" + margin.left + "," + margin.top + ")");
+
+ //  d3.csv("bar-data.csv", function(error, data) {
+
+ //      data.forEach(function(d) {
+ //          d.date = parseDate(d.date);
+ //          d.value = +d.value;
+ //      });
+    
+ //    x.domain(data.map(function(d) { return d.date; }));
+ //    y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+ //    svg.append("g")
+ //        .attr("class", "x axis")
+ //        .attr("transform", "translate(0," + height + ")")
+ //        .call(xAxis)
+ //      .selectAll("text")
+ //        .style("text-anchor", "end")
+ //        .attr("dx", "-.8em")
+ //        .attr("dy", "-.55em")
+ //        .attr("transform", "rotate(-90)" );
+
+ //    svg.append("g")
+ //        .attr("class", "y axis")
+ //        .call(yAxis)
+ //      .append("text")
+ //        .attr("transform", "rotate(-90)")
+ //        .attr("y", 6)
+ //        .attr("dy", ".71em")
+ //        .style("text-anchor", "end")
+ //        .text("Value ($)");
+
+ //    svg.selectAll("bar")
+ //        .data(data)
+ //      .enter().append("rect")
+ //        .style("fill", "steelblue")
+ //        .attr("x", function(d) { return x(d.date); })
+ //        .attr("width", x.rangeBand())
+ //        .attr("y", function(d) { return y(d.value); })
+ //        .attr("height", function(d) { return height - y(d.value); });
+
+ //  });
+
+ // var margin = {top: 20, right: 20, bottom: 30, left: 40},
+ //    width = 960 - margin.left - margin.right,
+ //    height = 500 - margin.top - margin.bottom;
+
+      var margin = {top: 20, right: 20, bottom: 70, left: 40},
+      width = 600 - margin.left - margin.right,
+      height = 300 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var svg = d3.select("#bar_graph_holder").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("totalcounts.csv", type, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.cat; }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("value");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.cat); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+});
+
+function type(d) {
+  d.value = +d.value;
+  return d;
+}
+
     graphs_up = true;
     }
 }
@@ -408,18 +572,18 @@ map.on('click', function (e) {
     }
 });
 /********************************mouse hover - lng lat ********************************/
-map.on('mousemove', function (e) {
-    var de = map.getBearing();
-    document.getElementById('info').innerHTML =
-        // e.point is the x, y coordinates of the mousemove event relative
-        // to the top-left corner of the map
-        JSON.stringify(e.point) + '<br />' +
-            // e.lngLat is the longitude, latitude geographical position of the event
-        JSON.stringify(e.lngLat) + '<br />' +
+// map.on('mousemove', function (e) {
+//     var de = map.getBearing();
+//     document.getElementById('info').innerHTML =
+//         // e.point is the x, y coordinates of the mousemove event relative
+//         // to the top-left corner of the map
+//         JSON.stringify(e.point) + '<br />' +
+//             // e.lngLat is the longitude, latitude geographical position of the event
+//         JSON.stringify(e.lngLat) + '<br />' +
 
-        map.getZoom()
-        ;
-});
+//         map.getZoom()
+//         ;
+// });
 /*************************************************************************************/
 
 map.on('rotatestart', function(e) {
@@ -451,6 +615,78 @@ map.on('rotatestart', function(e) {
 // "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 
 
+if (graphs_up) {
+  console.log("I'm here");
+  var margin = {top: 20, right: 20, bottom: 70, left: 40},
+      width = 600 - margin.left - margin.right,
+      height = 300 - margin.top - margin.bottom;
+
+  // Parse the date / time
+  var parseDate = d3.time.format("%Y-%m").parse;
+
+  var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+  var y = d3.scale.linear().range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom")
+      .tickFormat(d3.time.format("%Y-%m"));
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .ticks(10);
+
+  var svg = d3.select("#graph_stage").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", 
+            "translate(" + margin.left + "," + margin.top + ")");
+
+  d3.csv("bar-data.csv", function(error, data) {
+
+      data.forEach(function(d) {
+          d.date = parseDate(d.date);
+          d.value = +d.value;
+      });
+    
+    x.domain(data.map(function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", "-.55em")
+        .attr("transform", "rotate(-90)" );
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Value ($)");
+
+    svg.selectAll("bar")
+        .data(data)
+      .enter().append("rect")
+        .style("fill", "steelblue")
+        .attr("x", function(d) { return x(d.date); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d.value); })
+        .attr("height", function(d) { return height - y(d.value); });
+
+  });
+  graphs_up = false;
+}
 
 </script>
 
