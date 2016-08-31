@@ -43,6 +43,7 @@ h3 {
     margin-top: 50px;
     background-color: #656565;
     box-shadow: 0px 0px 20px #888888;
+    opacity: 0.5;
     /*background-color: red;*/
     position: absolute;
     z-index: 10;
@@ -56,6 +57,7 @@ h3 {
     margin-top: 50px;
     box-shadow: 0px 0px 20px #888888;
     background-color: #656565;
+    opacity: 0.5;
     /*background-color: red;*/
     position: absolute;
     z-index: 10;
@@ -128,6 +130,33 @@ h3 {
    -moz-border-radius: 70px; 
    -webkit-border-radius: 70px; 
    border-radius: 70px;
+    z-index: 97;}
+
+    #graph_zambia {
+  margin-top: 20%;
+  margin-left: 88%;
+  position: absolute;
+  width: 125px;
+   height: 50px;
+   background: black;
+
+   /*background: red;*/ 
+   box-shadow: 0px 0px 20px #888888;
+   -moz-border-radius: 70px; 
+   -webkit-border-radius: 70px; 
+    z-index: 97;}
+
+        #graph_uganda {
+  margin-top: 30%;
+  margin-left: 88%;
+  position: absolute;
+  width: 125px;
+   height: 50px;
+   background: black;
+   /*background: red;*/ 
+   box-shadow: 0px 0px 20px #888888;
+   -moz-border-radius: 70px; 
+   -webkit-border-radius: 70px; 
     z-index: 97;}
 
 #intro {
@@ -216,7 +245,7 @@ h3 {
 }
 
 .bar:hover {
-  fill: brown;
+  fill: yellow;
 }
 
 .axis {
@@ -287,10 +316,10 @@ var map = new mapboxgl.Map({
 //   .setLngLat([27.34, -10.95])
 //   .addTo(map);
 
-
-
-var draggy = map.dragRotate.isActive();
-console.log(draggy);
+var zambia_bounds = map.getLayer('luangwa-stratum-8quv64')
+console.log(zambia_bounds);
+// var draggy = map.dragRotate.isActive();
+// console.log(draggy);
 
 
 
@@ -306,18 +335,23 @@ console.log(draggy);
   // "html: '<div class='wrap'><div class='cube'><div class='front'>front</div><div class='back'>back</div><div class='top'>top</div><div class='bottom'>bottom</div><div class='left'>left</div><div class='right'>right</div></div></div>'"
 /***************************************************************************/
 /********************************tilter function****************************/
-var switcher = 0;
 function tilter() {
-    
-    if (switcher % 2 == 0) {
-        map.easeTo({pitch: 60});
-    } else {
-        map.easeTo({pitch: 00});
-    }
-    switcher++;
-    if (switcher % 2 == 0) {
-        switcher = 0;
-    }
+
+
+  if (map.getPitch() == 60) {
+    map.easeTo({pitch:00});
+  } else {
+    map.easeTo({pitch:60});
+  }  
+    // if (switcher % 2 == 0) {
+    //     map.easeTo({pitch: 60});
+    // } else {
+    //     map.easeTo({pitch: 00});
+    // }
+    // switcher++;
+    // if (switcher % 2 == 0) {
+    //     switcher = 0;
+    // }
     //map.flyTo({zoom: 6, center: [31.58252, -13.592763]});
 }
 /*****************************************************************************/
@@ -369,7 +403,7 @@ function tilter() {
 // var dis = new Marker(element: 'map.getCanvas(<div class="wrap"><div class="cube"><div class="front">front</div><div class="back">back</div><div class="top">top</div><div class="bottom">bottom</div><div class="left">left</div><div class="right">right</div></div></div>)');
 /****************************************onclicks************************************************/
 function jump_luangwa() {
-  map.flyTo({zoom: 8.1, center: [31.58252, -12.992763]});
+  map.flyTo({zoom: 8.1, center: [31.58252, -12.992763], pitch: 60});
   
   // if (switcher % 2 == 0) {
   //       map.easeTo({pitch: 60});
@@ -386,12 +420,11 @@ function jump_luangwa() {
 
 
 function jump_uganda() {
-  map.flyTo({zoom: 8.1, center: [32.6230382, 2.9245058]});
-
+  map.flyTo({zoom: 8.1, center: [33.801857958, 3.5705328783901], pitch: 60});
 }
 
 function start_view() {
-  map.flyTo({zoom: 4, center: [25.661, -6.4469]});
+  map.flyTo({zoom: 4, center: [25.661, -6.4469], pitch: 00});
   if (graphs_up) {
     var graph_stage = document.getElementById('graph_stage');
     graph_stage.remove();
@@ -407,6 +440,78 @@ function remove_and_add() {
   $('body').append("<div id='uganda' onclick='jump_uganda()'><p>Uganda</></div>");
 }
 
+var zam_graph = false;
+function show_zambia_graph() {
+  if (zam_graph) {
+    var get_graph = document.getElementById('bar_graph_holder');
+    get_graph.remove();
+    zam_graph = false;
+  } else {
+    $('#graph_stage').append("<div id='bar_graph_holder' style='margin-left: 25%; margin-top: 15%'></div>");
+         var margin = {top: 20, right: 20, bottom: 70, left: 40},
+      width = 600 - margin.left - margin.right,
+      height = 300 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var svg = d3.select("#bar_graph_holder").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("totalcounts2.csv", type, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.cat; }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("presence observations");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.cat); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+});
+
+function type(d) {
+  d.value = +d.value;
+  return d;
+}
+    zam_graph = true;
+  }
+}
+
 var graphs_up = false;
 function stage_graphs() {
   console.log(graphs_up);
@@ -415,7 +520,7 @@ function stage_graphs() {
     graph_stage.remove();
     graphs_up = false;
   } else {
-    $('body').append("<div id='graph_stage'><div id='bar_graph_holder' style='margin-left: 20%; margin-top: 15%'></div></div>");
+    $('body').append("<div id='graph_stage'><div onclick='show_zambia_graph()' id='graph_zambia'><h3 style='margin-left: 28px'>Zambia</h3></div><div id='graph_uganda'><h3 style='margin-left: 28px'>Uganda</h3></div></div>");
 
  // console.log("I'm here");
  //  var margin = {top: 20, right: 20, bottom: 70, left: 40},
@@ -491,66 +596,66 @@ function stage_graphs() {
  //    width = 960 - margin.left - margin.right,
  //    height = 500 - margin.top - margin.bottom;
 
-      var margin = {top: 20, right: 20, bottom: 70, left: 40},
-      width = 600 - margin.left - margin.right,
-      height = 300 - margin.top - margin.bottom;
+//       var margin = {top: 20, right: 20, bottom: 70, left: 40},
+//       width = 600 - margin.left - margin.right,
+//       height = 300 - margin.top - margin.bottom;
 
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+// var x = d3.scale.ordinal()
+//     .rangeRoundBands([0, width], .1);
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+// var y = d3.scale.linear()
+//     .range([height, 0]);
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+// var xAxis = d3.svg.axis()
+//     .scale(x)
+//     .orient("bottom");
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
+// var yAxis = d3.svg.axis()
+//     .scale(y)
+//     .orient("left")
+//     .ticks(10);
 
-var svg = d3.select("#bar_graph_holder").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// var svg = d3.select("#bar_graph_holder").append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//   .append("g")
+//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("totalcounts.csv", type, function(error, data) {
-  if (error) throw error;
+// d3.csv("totalcounts.csv", type, function(error, data) {
+//   if (error) throw error;
 
-  x.domain(data.map(function(d) { return d.cat; }));
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+//   x.domain(data.map(function(d) { return d.cat; }));
+//   y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+//   svg.append("g")
+//       .attr("class", "x axis")
+//       .attr("transform", "translate(0," + height + ")")
+//       .call(xAxis);
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("value");
+//   svg.append("g")
+//       .attr("class", "y axis")
+//       .call(yAxis)
+//     .append("text")
+//       .attr("transform", "rotate(-90)")
+//       .attr("y", 6)
+//       .attr("dy", ".71em")
+//       .style("text-anchor", "end")
+//       .text("value");
 
-  svg.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.cat); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); });
-});
+//   svg.selectAll(".bar")
+//       .data(data)
+//     .enter().append("rect")
+//       .attr("class", "bar")
+//       .attr("x", function(d) { return x(d.cat); })
+//       .attr("width", x.rangeBand())
+//       .attr("y", function(d) { return y(d.value); })
+//       .attr("height", function(d) { return height - y(d.value); });
+// });
 
-function type(d) {
-  d.value = +d.value;
-  return d;
-}
+// function type(d) {
+//   d.value = +d.value;
+//   return d;
+// }
 
     graphs_up = true;
     }
@@ -687,7 +792,7 @@ if (graphs_up) {
   });
   graphs_up = false;
 }
-
+//var zambia_bounds = map.getLayer(luangwa-stratum-8quv64)
 </script>
 
 </body>

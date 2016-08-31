@@ -1,0 +1,8 @@
+type,survey_id,observation_count,avg_dist_s_luangwa,avg_dist_n_luangwa
+human_presence,871,192,74.8,25.55
+hartebeest,871,75,54.47,36.15
+wildebeest,871,43,81.78,54.57
+buffalo,871,532,44.77,13.7
+cattle,871,468,47.65,21.3
+oribi,871,0,0,0
+kudu,871,46,75.4,28.95

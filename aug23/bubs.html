@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>bubs</title>
+
+    <script src="jquery.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <style>
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: grey;
+        }
+    </style>
+
+</head>
+<body>
+<div class='wrapper'></div>
+<script>
+var diameter = 1000, //max size of the bubbles
+    color    = d3.scale.category20b(); //color category
+
+var bubble = d3.layout.pack()
+    .sort(null)
+    .size([960, 760])
+    .padding(10);
+
+var svg = d3.select(".wrapper")
+    .append("svg")
+    .attr("width", 960)
+    .attr("height", 760)
+    .attr("class", "bubble");
+
+d3.csv("avg_distance_zambia.csv", function(error, data){
+
+    //convert numerical values from strings to numbers
+    data = data.map(function(d){ d.value = +d["observation_count"]; return d; });
+
+    //bubbles needs very specific format, convert data to this.
+    var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
+
+    //setup the chart
+    var bubbles = svg.append("g")
+        .attr("transform", "translate(0,0)")
+        .selectAll(".bubble")
+        .data(nodes)
+        .enter();
+
+    //create the bubbles
+    bubbles.append("circle")
+        .attr("r", function(d){ console.log(d.r); console.log(d["observation_count"]); return d["observation_count"] / 3.33333; })
+        // .attr("r", function(d){ console.log(d["observation_count"] / 5); return d["observation_count"] / 5; })
+        .attr("cx", function(d){ return (diameter / 2 + d["avg_dist_s_luangwa"] * 8); })
+        .attr("cy", function(d){ return d.y; })
+        .style("fill", function(d) { return color(d.value); });
+
+    //format the text for each bubble
+    bubbles.append("text")
+        .attr("x", function(d){ return d.x; })
+        .attr("y", function(d){ return d.y + 5; })
+        .attr("text-anchor", "middle")
+        .text(function(d){ return d["type"]; })
+        .style({
+            "fill":"white", 
+            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+            "font-size": "12px"
+        });
+})
+</script>
+</body>
+</html>
