@@ -1,0 +1,36 @@
+observation_type,id,num_observed,survey_area,in_out
+Buffalo,11023,1396,Kafue,In
+Hartebeest,11204,608,Kafue,In
+Zebra,11385,450,Kafue,In
+Human Presence,11566,845,Kafue,In
+Wildebeest,11747,313,Kafue,In
+Oribi,11928,14,Kafue,In
+Livestock,12109,274,Kafue,In
+Buffalo,12290,4000,Luangwa,In
+Hartebeest,12471,30,Luangwa,In
+Zebra,12652,631,Luangwa,In
+Human Presence,12833,76,Luangwa,In
+Wildebeest,13014,248,Luangwa,In
+Oribi,13195,0,Luangwa,In
+Livestock,13376,2,Luangwa,In
+Buffalo,13557,6154,Kidepo,In
+Hartebeest,13738,0,Kidepo,In
+Zebra,13919,24,Kidepo,In
+Human Presence,14100,1,Kidepo,Out
+Wildebeest,14281,0,Kidepo,In
+Oribi,14462,0,Kidepo,In
+Livestock,14643,420,Kidepo,In
+Buffalo,14824,782,Kidepo,Out
+Buffalo,15005,1931,Luangwa,Out
+Hartebeest,15186,25,Luangwa,Out
+Human Presence,15367,4102,Luangwa,Out
+Livestock,15548,41,Luangwa,Out
+Wildebeest,15729,199,Luangwa,Out
+Zebra,15910,129,Luangwa,Out
+Buffalo,16091,80,Kafue,Out
+Hartebeest,16272,106,Kafue,Out
+Human Presence,16453,798,Kafue,Out
+Livestock,16634,3755,Kafue,Out
+Oribi,16815,5,Kafue,Out
+Wildebeest,16996,17,Kafue,Out
+Zebra,17177,204,Kafue,Out

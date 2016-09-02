@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Beta Human Presence Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <script src="jquery.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+ <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
+    <style>
+        body { margin:0; padding:0; }
+
+        #map { position:absolute; top:0; bottom:0; width:100%;}
+
+        svg {margin-left: 45%}
+
+        p {
+          margin-left: 90px;        
+          position: fixed;
+          color: white;
+          font-family: "Arial Black", Gadget, sans-serif;
+        }
+
+        h3 {
+          margin-left: 10px;
+          margin-top: 14px;        
+          position: fixed;
+          color: white;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        circle {
+          stroke: white;
+          stroke-width: 1px;
+          opacity: .8;
+        }
+
+        .btn-group {margin-left: 35%}
+
+        .label {
+          fill: white;
+          font-size: 16px;
+        }
+
+        .btn {
+          border-radius: 50px;
+          background-color: #656565;
+          opacity: 1;
+          box-shadow: 0px 0px 20px #888888;
+          margin-top: 50px;
+          margin-left: 30%;
+          border-color: black;
+          color: white;
+        }
+
+        #tilter {
+          width: 250px;
+          height: 50px;
+          border-radius: 20px;
+          margin-left: 50px;
+          margin-top: 50px;
+          background-color: #656565;
+          position: absolute;
+          z-index: 10;
+        }
+
+        #luangwa {
+          width: 250px;
+          height: 50px;
+          border-radius: 50px;
+          margin-left: 10%;
+          margin-top: 50px;
+          background-color: #656565;
+          box-shadow: 0px 0px 20px #888888;
+          opacity: 0.5;
+          /*background-color: red;*/
+          position: absolute;
+          z-index: 10;
+          }
+
+        #kafue {
+          width: 250px;
+          height: 50px;
+          border-radius: 50px;
+          margin-left: 40%;
+          margin-top: 50px;
+          box-shadow: 0px 0px 20px #888888;
+          background-color: #656565;
+          opacity: 0.5;
+          /*background-color: red;*/
+          position: absolute;
+          z-index: 10;
+        }
+
+        #uganda {
+          width: 250px;
+          height: 50px;
+          border-radius: 20px;
+          margin-left: 70%;
+          margin-top: 50px;
+          box-shadow: 0px 0px 20px #888888;
+          background-color: #656565;
+          opacity: 0.5;
+          /*background-color: red;*/
+          position: absolute;
+          z-index: 10;
+        }
+
+        #gridzy {
+          width: 250px;
+          height: 210px;
+          border-radius: 20px;
+          margin-left: 70%;
+          margin-top: 20%;
+          background-color: #656565;
+          box-shadow: 0px 0px 20px #888888;
+          /*background-color: red;*/
+          position: absolute;
+          z-index: 10;
+        }
+
+        #graph_header {
+          margin-top: 10px;
+          position: absolute;
+          width: 100%;
+          height: 100px;
+          background: black;
+          z-index: 97;
+        }
+
+        #splash {
+          width: 100%;
+          height: 100%;
+          opacity: 0.85;
+          background-color: black;
+          position: absolute;
+          z-index: 98;
+        }
+
+        #graph_stage {
+          width: 100%;
+          height: 100%;
+          opacity: 0.93;
+          align: top;
+          background-color: black;
+          position: absolute;
+          z-index: 95;
+        }
+
+        #macro {
+          margin-top: 20%;
+          margin-left: 50px;
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background: #656565;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          z-index: 97;
+        }
+
+        #micro {margin-top: 25%;
+          margin-left: 50px;
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background: #656565;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          border-radius: 70px;
+          z-index: 94;
+        }
+
+        #graphs {margin-top: 30%;
+          margin-left: 50px;
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background: #656565;
+          /*background: red; */
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          border-radius: 70px;
+          z-index: 97;
+        }
+
+        #graph_totals {
+          margin-top: 15%;
+          margin-left: 88%;
+          position: absolute;
+          width: 125px;
+          height: 50px;
+          background: black;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          z-index: 97;
+        }
+
+        #graph_zambia {
+          margin-top: 20%;
+          margin-left: 88%;
+          position: absolute;
+          width: 125px;
+          height: 50px;
+          background: black;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          z-index: 97;
+        }
+
+        #graph_kafue{
+          margin-top: 25%;
+          margin-left: 88%;
+          position: absolute;
+          width: 125px;
+          height: 50px;
+          background: black;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          z-index: 97;
+        }
+
+        #graph_uganda {
+          margin-top: 30%;
+          margin-left: 88%;
+          position: absolute;
+          width: 125px;
+          height: 50px;
+          background: black;
+          /*background: red;*/ 
+          box-shadow: 0px 0px 20px #888888;
+          -moz-border-radius: 70px; 
+          -webkit-border-radius: 70px; 
+          z-index: 97;
+        }
+
+        #intro {
+          position: fixed;
+          top: 35%;
+          left: 31%;
+          color: white;
+          font-family: "Arial Black", Gadget, sans-serif;
+        }
+
+/******************************************this is for the d3*****************************/
+
+    </style>
+
+</head>
+<body>
+
+
+<div id='splash' onclick="remove_and_add()">
+  <div id='intro'>
+    What is the impact of <br>
+    <font size='10'>Human Presence</font><br>
+    near national parks? <font size='1'> (click anywhere)</font>
+  </div>
+</div>
+
+<div id='macro' onclick="start_view()"><img src="africaicon.svg" style="margin-top: 10px; margin-left: 10px; width: 30px; height: auto;"></div>
+<div id='micro' onclick="tilter()"><h3>Tilt</h3></div>
+<div id='graphs' onclick="stage_graphs()"><img src="bars.svg" style="margin-top: 12px; margin-left: 10px; width: 30px; height: auto;"></img></div>
+<div id='map'></div>
+
+<!-- <pre id='info'></pre> -->
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="lib/jquery.js"></script>
+    <script src="lib/bootstrap.js"></script>
+    <script src="lib/underscore.js"></script>
+
+<script>
+
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoidHN1a2loYWxsIiwiYSI6ImNpcW1tMDE4OTAwdTlmbm5uajk1N3duNzMifQ.YXqXdaozTI35jm069S01qw';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'cis7sq46n0000gvnn08i5jyox.json',
+    maxZoom: 10,
+    minZoom: 3.2,
+    center: [25.661, -6.4469],
+    pitch: 00, // pitch in degrees
+    bearing: 00, // bearing in degrees
+    zoom: 4,
+    dragRotate: true
+});
+
+
+/********************************tilter function****************************/
+function tilter() {
+  if (map.getPitch() == 60) {
+    map.easeTo({pitch:00});
+  } else {
+    map.easeTo({pitch:60});
+  }  
+}
+
+/****************************************onclicks************************************************/
+function jump_luangwa() {
+  $('#gridzy').remove();
+  map.flyTo({zoom: 8.1, center: [31.58252, -12.992763], pitch: 60});
+  $('body').append("<div id='gridzy'><img style='margin-top: 25px; margin-left: 10px' src='gridzy.svg'></img></div>");
+  $('#gridzy').delay(5000).hide(10);
+
+}
+
+
+function jump_uganda() {
+  $('#gridzy').remove();
+  map.flyTo({zoom: 8.1, center: [33.801857958, 3.5705328783901], pitch: 60});
+  $('body').append("<div id='gridzy'><img style='margin-top: 25px; margin-left: 10px' src='gridzy.svg'></img></div>");
+  $('#gridzy').delay(5000).hide(10);
+}
+
+function jump_kafue() {
+  $('#gridzy').remove();
+  map.flyTo({zoom: 8.1, center: [25.6484101562, -15.4330657098], pitch: 60});
+  $('body').append("<div id='gridzy'><img style='margin-top: 25px; margin-left: 10px' src='gridzy.svg'></img></div>");
+  $('#gridzy').delay(5000).hide(10);
+}
+
+function start_view() {
+  map.flyTo({zoom: 4, center: [25.661, -6.4469], pitch: 00, bearing: 00});
+  if (graphs_up) {
+    var graph_stage = document.getElementById('graph_stage');
+    graph_stage.remove();
+    graphs_up = false;
+  } 
+}
+
+function remove_and_add() {
+  //alert("hey you clicked me!!!!");
+  var splash_div = document.getElementById('splash');
+  splash_div.remove()
+  $('body').append("<div id='luangwa' onclick='jump_luangwa()'><p>Luangwa</></div>");
+  $('body').append("<div id='uganda' onclick='jump_uganda()'><p>Kidepo</></div>");
+  $('body').append("<div id='kafue' onclick='jump_kafue()'><p>Kafue</></div>");
+}
+
+var graphs_up = false;
+function stage_graphs() {
+  //console.log(graphs_up);
+  if (graphs_up) {
+    var graph_stage = document.getElementById('graph_stage');
+    graph_stage.remove();
+    graphs_up = false;
+  } else {
+    $('body').append("<div id='graph_stage'><div class='btn-group' data-toggle='buttons'><label class='btn btn-default active' id='all'><input type='radio' name='options'> Observation Totals</label><label class='btn btn-default' id='survey_area'><input type='radio' name='options'> Observations By Survey Area</label></div></div>");
+
+
+      d3.csv('data/pure_totals.csv', function (error, data) {
+
+        var width = window.innerWidth, height = window.innerHeight;
+        var fill = d3.scale.ordinal()
+          .domain(["Human Presence", "Buffalo", "Hartebeest", "Wildebeest", "Livestock", "Oribi", "Zebra"])
+          .range(["red", "green", "blue", "lightsteelblue", "magenta", "Yellow", "purple"])
+
+        var svg = d3.select("#graph_stage").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var max_amount = d3.max(data, function (d) { return parseInt(d.num_observed)})
+        var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
+
+        _.each(data, function (elem) {
+          elem.radius = radius_scale(elem.num_observed) * .7;
+          elem.all = 'all';
+          elem.x = _.random(0, width);
+          elem.y = _.random(0, height);
+        })
+
+        var padding = 4;
+        var maxRadius = d3.max(_.pluck(data, 'radius'));
+
+        var surveys = {
+          "Luangwa": {name:"Luangwa", x: 225, y: 300},
+          "Kafue": {name:"Kafue", x: 625, y: 300},
+          "Kidepo": {name:"Kidepo", x: 975, y: 300}
+        }
+
+        var obs_totals = { "all": {name:"Observation Totals", x: 500, y: 300}};
+
+        var nodes = svg.selectAll("circle")
+          .data(data);
+
+        nodes.enter().append("circle")
+          .attr("class", "node")
+          .attr("cx", function (d) { return d.x; })
+          .attr("cy", function (d) { return d.y; })
+          .attr("r", 1)
+          .style("fill", function (d) { return fill(d.observation_type); })
+          .on("mouseover", function (d) { showPopover.call(this, d); })
+          .on("mouseout", function (d) { removePopovers(); })
+
+        nodes.transition().delay(500).duration(5000)
+          .attr("r", function (d) { return d.radius; })
+
+        var force = d3.layout.force();
+
+        draw('all');
+
+        $( ".btn" ).click(function() {
+          draw(this.id);
+        });
+
+        function draw (varname) {
+          var foci = varname === "all" ? obs_totals: surveys;
+          force.on("tick", tick(foci, varname));
+          labels(foci)
+          force.start();
+        }
+
+        function tick (foci, varname) { console.log(varname);
+          return function (e) {
+            for (var i = 0; i < data.length; i++) {
+              var o = data[i];
+              var f = foci[o[varname]];
+              o.y += (f.y - o.y) * e.alpha;
+              o.x += (f.x - o.x) * e.alpha;
+            }
+            nodes
+              .each(collide(.1))
+              .attr("cx", function (d) { return d.x; })
+              .attr("cy", function (d) { return d.y; });
+          }
+        }
+
+        function labels (foci) {
+          svg.selectAll(".label").remove();
+
+          svg.selectAll(".label")
+          .data(_.toArray(foci)).enter().append("text")
+          .attr("class", "label")
+          .text(function (d) { return d.name })
+          .attr("transform", function (d) {
+            return "translate(" + (d.x - ((d.name.length)*3)) + ", " + (d.y - 275) + ")";
+          });
+        }
+
+        function removePopovers () {
+          $('.popover').each(function() {
+            $(this).remove();
+          }); 
+        }
+
+        function showPopover (d) { console.log(d)
+          $(this).popover({
+            placement: 'auto top',
+            container: 'body',
+            trigger: 'manual',
+            html : true,
+            content: function() {
+              return "Observation: " + d.observation_type + "<br/>Number Observed: " + d3.format(",")(+d.num_observed) + 
+                     "<br/>Survey Area: " + d.survey_area +
+                     "<br/>In or Out National Park: " + d.in_out; }
+          });
+          $(this).popover('show')
+        }
+
+        function collide(alpha) {
+          var quadtree = d3.geom.quadtree(data);
+          return function(d) {
+            var r = d.radius + maxRadius + padding,
+                nx1 = d.x - r,
+                nx2 = d.x + r,
+                ny1 = d.y - r,
+                ny2 = d.y + r;
+            quadtree.visit(function(quad, x1, y1, x2, y2) {
+              if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                    y = d.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = d.radius + quad.point.radius + padding;
+                if (l < r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  quad.point.x += x;
+                  quad.point.y += y;
+                }
+              }
+              return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+          };
+        }
+      });
+
+    zam_graph = true;
+    graphs_up = true;
+    }
+}
+
+/*****************************************stratum disappear************************************************/
+// map.on('click', function (e) {
+//     // Use queryRenderedFeatures to get features at a click event's point
+//     // Use layer option to avoid getting results from other layers
+//     var features = map.queryRenderedFeatures(e.point, { layers: ['stratum1'] });
+//     // if there are features within the given radius of the click event,
+//     // fly to the location of the click event
+//     if (features.length) {
+//         // Get coordinates from the symbol and center the map on those coordinates
+//         map.flyTo({zoom: 6, center: features[0].geometry.coordinates[0][0]});
+//         map.removeLayer('stratum1');
+//         //map.addLayer('transects');
+        
+//     }
+// });
+/********************************DEV tool to reference coordinates. Must uncommet the <pre> tag above as well.
+                                                                    mouse hover - lng lat ********************************/
+// map.on('mousemove', function (e) {
+//     var de = map.getBearing();
+//     document.getElementById('info').innerHTML =
+//         // e.point is the x, y coordinates of the mousemove event relative
+//         // to the top-left corner of the map
+//         JSON.stringify(e.point) + '<br />' +
+//             // e.lngLat is the longitude, latitude geographical position of the event
+//         JSON.stringify(e.lngLat) + '<br />' +
+
+//         map.getZoom()
+//         ;
+// });
+/*************************************************************************************/
+
+</script>
+
+</body>
+</html>

@@ -17,8 +17,24 @@
         stroke-width: 1px;
         opacity: .8;
       }
+      .btn {
+        border-radius: 50px;
+        background-color: black;
+        box-shadow: 0px 0px 20px #888888;
+        margin-top: 10px;
+        border-color: black;
+        text-decoration-color: white;
+      }
+
+/*      .btn:active{
+        background: red;
+      }*/
+      .btn:focus{
+        background: red;
+      }
       .btn-group {
-        margin-left: 390px;
+        margin-left: 80px;
+        border-radius: 50px;
       }
       .label {
         fill: white;
@@ -38,26 +54,27 @@
     </script> -->
   </head>
   <body>
-    <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-default active" id="all">
-        <input type="radio" name="options"> Observation Totals
+    <div class='btn-group' data-toggle='buttons'>
+      <label class='btn btn-default active' id='all'>
+        <input type='radio' name='options'> Observation Totals
       </label>
-      <label class="btn btn-default" id="survey_area">
-        <input type="radio" name="options"> Observations By Survey Area
+      <label class='btn btn-default' id='survey_area'>
+        <input type='radio' name='options'> Observations By Survey Area
       </label>
     </div>
-    <div id="chart"></div>
+    <div id='chart'></div>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="lib/jquery.js"></script>
     <script src="lib/bootstrap.js"></script>
     <script src="lib/underscore.js"></script>
     <script>
-      d3.csv('data/aa_gates.csv', function (error, data) {
+
+      d3.csv('data/pure_totals.csv', function (error, data) {
 
         var width = 1000, height = 1000;
         var fill = d3.scale.ordinal()
-          .domain(["Human Presence", "Buffalo", "Hartebeest", "Zebra"])
-          .range(["#d84b2a", "#beccae", "#7aa25c", "purple"])
+          .domain(["Human Presence", "Buffalo", "Hartebeest", "Wildebeest", "Livestock", "Oribi", "Zebra"])
+          .range(["red", "green", "blue", "lightsteelblue", "magenta", "Yellow", "purple"])
 
         var svg = d3.select("#chart").append("svg")
             .attr("width", width)
@@ -67,7 +84,7 @@
         var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
 
         _.each(data, function (elem) {
-          elem.radius = radius_scale(elem.num_observed) * .40;
+          elem.radius = radius_scale(elem.num_observed) * .7;
           elem.all = 'all';
           elem.x = _.random(0, width);
           elem.y = _.random(0, height);
@@ -114,7 +131,7 @@
           force.start();
         }
 
-        function tick (foci, varname) { console.log(varname);
+        function tick (foci, varname) { 
           return function (e) {
             for (var i = 0; i < data.length; i++) {
               var o = data[i];
@@ -155,8 +172,10 @@
             html : true,
             content: function() {
               return "Observation: " + d.observation_type + "<br/>Number Observed: " + d3.format(",")(+d.num_observed) + 
-                     "<br/>Survey Area: " + d.survey_area; }
+                     "<br/>Survey Area: " + d.survey_area +
+                     "<br/>In or Out National Park: " + d.in_out; }
           });
+          console.log("hello" + this);
           $(this).popover('show')
         }
 

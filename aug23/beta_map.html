@@ -2,10 +2,11 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Human Presence Map</title>
+    <title>Beta Human Presence Map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="css/bootstrap.css" rel="stylesheet">
     <script src="jquery.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
  <!--    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" /> -->
@@ -24,30 +25,17 @@ h3 {
   color: white;
   font-family: Arial, Helvetica, sans-serif;
 }
-svg {
-    height: 68%;
-    padding-right: 10%;
-    padding-left: 10%;
-    padding-top: 10%;
-    padding-bottom: 0%;
-    position: relative;
-    display: block;
-    margin: 0 auto;
-}
-div.tooltip { 
-    position: absolute;     
-    text-align: center;     
-    width: 60px;          
-    height: 28px;         
-    padding: 2px;       
-    font: 12px sans-serif;    
-    background: lightsteelblue; 
-    border: 0px;    
-    border-radius: 8px;     
-    pointer-events: none;     
-}
-.node:hover {
-        fill: orange;
+circle {
+        stroke: white;
+        stroke-width: 1px;
+        opacity: .8;
+      }
+      .btn-group {
+        margin-left: 390px;
+      }
+      .label {
+        fill: white;
+        font-size: 16px;
       }
         #map { position:absolute; top:0; bottom:0; width:100%; }
         #tilter {
@@ -365,6 +353,10 @@ div.tooltip {
 
 <!-- <pre id='info'></pre> -->
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="lib/jquery.js"></script>
+    <script src="lib/bootstrap.js"></script>
+    <script src="lib/underscore.js"></script>
 
 <script>
 
@@ -443,316 +435,145 @@ function stage_graphs() {
     graph_stage.remove();
     graphs_up = false;
   } else {
-    $('body').append("<div id='graph_stage'><div id='graph_header'><p>This bubble graph compares population counts across serveral different surveys. Hovering the mouse over a bubble will reveal the particular counts.</></div><div id='graph_totals'><h3 style='margin-left: 28px'>Totals</h3></div><div id='graph_zambia'><h3 style='margin-left: 28px'>Luangwa</h3></div><div id='graph_kafue'><h3 style='margin-left: 28px'>Kafue</h3></div><div id='graph_uganda'><h3 style='margin-left: 28px'>Kidepo</h3></div></div>");
-
-     var diameter = 300,
-    format = d3.format(",d");
+    $('body').append("<div id='graph_stage'><div class='btn-group' data-toggle='buttons'><label class='btn btn-default active' id='all'><input type='radio' name='options'> Observation Totals</label><label class='btn btn-default' id='survey_area'><input type='radio' name='options'> Observations By Survey Area</label></div><div id='chart'></div><div id='graph_totals'><h3 style='margin-left: 28px'>Totals</h3></div><div id='graph_zambia'><h3 style='margin-left: 28px'>Luangwa</h3></div><div id='graph_kafue'><h3 style='margin-left: 28px'>Kafue</h3></div><div id='graph_uganda'><h3 style='margin-left: 28px'>Kidepo</h3></div></div>");
 
 
-  var color = d3.scale.ordinal() 
-  ///////////RED/////////////////////GREEN/////////////////PURPLE///////////////YELLOW///////////////ORANGE////////////////BLUE////////////////MAGENTA
- .range(["rgba(255, 0, 0, 1)", "rgba(0,60,0,45.20)","rgb(73, 28, 169)", "rgb(242, 203, 48)", "rgb(226, 147, 46)", "rgb(56, 152, 213)", "rgb(204, 23, 138)"]);
+      d3.csv('data/pure_totals.csv', function (error, data) {
 
-var bubble = d3.layout.pack()
-    .sort(null)
-    .size([diameter, diameter])
-    .padding(10);
+        var width = 1000, height = 1000;
+        var fill = d3.scale.ordinal()
+          .domain(["Human Presence", "Buffalo", "Hartebeest", "Wildebeest", "Livestock", "Oribi", "Zebra"])
+          .range(["red", "green", "blue", "lightsteelblue", "magenta", "Yellow", "purple"])
 
-var svg = d3.select("#graph_stage").append("svg")
-    .attr("position", "relative")
-    .attr("class", "bubble");
+        var svg = d3.select("#chart").append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-var div = d3.select("svg").append("title") 
-    .attr("class", "tooltip")       
-    .style("opacity", 0);
+        var max_amount = d3.max(data, function (d) { return parseInt(d.num_observed)})
+        var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
 
-var root = {
-	//technically not true totals. Only totals for the three surveys covered in this project
-    "children": [{
-        "name": "Human Presence Totals", //red
-        "size": 1793,
-        "color": "red"
-    }, 
-    {
-        "name": "Buffalo Totals", //green
-        "size": 14343,
-        "color": "green"
-    }, 
-    {
-        "name": "Zebra Totals", //purple
-        "size": 1363,
-        "color": "purple"
-    }, 
-    {
-        "name": "Oribi Totals", //yellow
-        "size": 19,
-        "color": "yellow"
-    }, 
-    {
-        "name": "Hartebeest Totals", //orange
-        "size": 709,
-        "color": "blue"
-    }, 
-    {
-        "name": "Wildebeest Totals", //blue
-        "size": 777,
-        "color": "lightsteelblue"
-    }, 
-    {
-        "name": "Livestock Totals", //magenta
-        "size": 4492,
-        "color": "magenta"
-    }]
-};
-
-var root2 = {
-    "children": [{
-        "name": "Observations of Luangwa Human Presence", //red 
-        "size": 921,
-        "color": "red"
-    }, 
-    {
-        "name": "Observations of Luangwa Buffalo", //green
-        "size": 5931,
-        "color": "green"
-    },
-
-    {
-        "name": "Observations of Luangwa Zebra", //purple
-        "size": 631,
-        "color": "purple"
-    }, 
-    {
-        "name": "Observations of Luangwa Oribi", //yellow
-        "size": 00,
-        "color": "yellow"
-    }, 
-    {
-        "name": "Observations of Luangwa Hartebeest", //orange
-        "size": 55,
-        "color": "blue"
-    },
-    
-    {
-        "name": "Observations of Luangwa Wildebeest", //blue 
-        "size": 447,
-        "color": "lightsteelblue"
-    }, 
-    
-    {
-        "name": "Observations of Luangwa Livestock", //magenta
-        "size": 43,
-        "color": "magenta"
-    }]
-};
-
-var root3 = {
-
-    "children": [{
-        "name": "Observations of Kafue Human Presence", //red
-        "size": 871,
-        "color": "red"
-    }, 
-    {
-        "name": "Observations of Kafue Buffalo", //green
-        "size": 1476,
-        "color": "green"
-    },
-    {
-        "name": "Observations of Kafue Zebra", //purple
-        "size": 579,
-        "color": "purple"
-    }, 
-    {
-        "name": "Observations of Kafue Oribi", //yellow
-        "size": 19,
-        "color": "yellow"
-    }, 
-    {
-        "name": "Observations of Kafue Hartebeest", //orange
-        "size": 714,
-        "color": "blue"
-    }, 
-    {
-        "name": "Observations of Kafue Wildebeest", //blue
-        "size": 330,
-        "color": "lightsteelblue"
-    }, 
-    {
-        "name": "Observations of Kafue Livestock", //magenta
-        "size": 4029,
-        "color": "magenta"
-    }]
-};
-
-var root4 = {
-
-    "children": [{
-        "name": "Observations of Uganda Human Presence", //red
-        "size": 1,
-        "color": "red"
-    }, 
-    {
-        "name": "Observations of Uganda Buffalo", //green
-        "size": 6936,
-        "color": "green"
-    }, 
-    {
-        "name": "Observations of Uganda Zebra", //purple
-        "size": 153,
-        "color": "purple"
-    }, 
-    {
-        "name": "Observations of Uganda Oribi", //yellow
-        "size": 00,
-        "color": "yellow"
-    }, 
-    {
-        "name": "Observations of Uganda Hartebeest", //orange
-        "size": 00,
-        "color": "blue"
-    }, 
-    {
-        "name": "Observations of Uganda Wildebeest", //blue
-        "size": 00,
-        "color": "lightsteelblue"
-    }, 
-    {
-        "name": "Observations of Uganda Livestock", //magenta
-        "size": 420,
-        "color": "magenta"
-    }]
-
-};
-
-var node = svg.selectAll(".node")
-    .data(bubble.nodes(classes(root))
-    .filter(function (d) {
-    return !d.children;
-}))
-    .enter().append("g")
-    .attr("class", "node")
-    .attr("transform", function (d) {
-    return "translate(" + d.x + "," + d.y + ")";
-});
-
-node.append("title")
-    .text(function (d) {
-      console.log(d);
-    return d.className + ": " + d.color;
-});
-
-node.append("circle")
-    .attr("r", function (d) {
-    return d.value / 2;
-})
-    .style("fill", function (d, i) {
-    return color(i);
-});
-
-
-
-// Returns a flattened hierarchy containing all leaf nodes under the root.
-
-function classes(root) {
-    var classes = [];
-
-    function recurse(name, node) {
-        if (node.children) node.children.forEach(function (child) { 
-            recurse(node.name, child);
-        });
-        else classes.push({ //setting the getters
-            packageName: name,
-            className: node.name,
-            value: node.size
-        });
-    }
-
-    recurse(null, root);
-    return {
-        children: classes
-    };
-}
-
-//update function
-function changebubble(root) {
-    var node = svg.selectAll(".node")
-        .data(
-            bubble.nodes(classes(root)).filter(function (d){return !d.children;}),
-            function(d) {return d.className} // key data based on className to keep object constancy
-        );
-    
-    // capture the enter selection
-    var nodeEnter = node.enter()
-        .append("g")
-        .attr("class", "node")
-        .attr("transform", function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        });
-    
-    // re-use enter selection for circles
-    nodeEnter
-        .append("circle")
-        .attr("r", function (d) {return d.r;})
-        .style("fill", function (d, i) {return color(i);});
-    
-    // re-use enter selection for titles
-    nodeEnter
-        .append("title")
-        .text(function (d) {
-            return d.className + ": " + d.value;
-        });
-    
-    node.select("circle")
-        .transition().duration(1000)
-        .attr("r", function (d) {
-            return d.r; //using the different values of counts for the sizes
+        _.each(data, function (elem) {
+          elem.radius = radius_scale(elem.num_observed) * .7;
+          elem.all = 'all';
+          elem.x = _.random(0, width);
+          elem.y = _.random(0, height);
         })
-        .style("fill", function (d, i) {
-        	console.log(d);
-            return d.color;
-        });
 
-    node.transition().attr("class", "node") //handling transitions
-        .attr("transform", function (d) { 
-        return "translate(" + d.x + "," + d.y + ")";
-    });
+        var padding = 4;
+        var maxRadius = d3.max(_.pluck(data, 'radius'));
 
-    node.exit().remove();
-
-    // Returns a flattened hierarchy containing all leaf nodes under the root.
-    function classes(root) {
-        var classes = [];
-
-        function recurse(name, node) {
-            if (node.children) node.children.forEach(function (child) {
-                recurse(node.name, child);
-            });
-            else classes.push({ //defining the accessable data in the nodes.
-                packageName: name,
-                className: node.name,
-                value: node.size,
-                color: node.color
-            });
+        var year_centers = {
+          "Luangwa": {name:"Luangwa", x: 150, y: 300},
+          "Kafue": {name:"Kafue", x: 550, y: 300},
+          "Kidepo": {name:"Kidepo", x: 900, y: 300}
         }
 
-        recurse(null, root);
-        return {
-            children: classes
-        };
-    }
+        var all_center = { "all": {name:"Observation Totals", x: 500, y: 300}};
 
-}
+        var nodes = svg.selectAll("circle")
+          .data(data);
 
-	function updateBubble1() {changebubble(root);};
-	function updateBubble2() {changebubble(root2);};
-	function updateBubble3() {changebubble(root3);};
-	function updateBubble4() {changebubble(root4);};
+        nodes.enter().append("circle")
+          .attr("class", "node")
+          .attr("cx", function (d) { return d.x; })
+          .attr("cy", function (d) { return d.y; })
+          .attr("r", 1)
+          .style("fill", function (d) { return fill(d.observation_type); })
+          .on("mouseover", function (d) { showPopover.call(this, d); })
+          .on("mouseout", function (d) { removePopovers(); })
 
-	d3.select("#graph_totals").on("click",updateBubble1);
-	d3.select("#graph_zambia").on("click",updateBubble2);
-	d3.select("#graph_kafue").on("click",updateBubble3);
-	d3.select("#graph_uganda").on("click",updateBubble4);
+        nodes.transition().delay(500).duration(5000)
+          .attr("r", function (d) { return d.radius; })
+
+        var force = d3.layout.force();
+
+        draw('all');
+
+        $( ".btn" ).click(function() {
+          draw(this.id);
+        });
+
+        function draw (varname) {
+          var foci = varname === "all" ? all_center: year_centers;
+          force.on("tick", tick(foci, varname));
+          labels(foci)
+          force.start();
+        }
+
+        function tick (foci, varname) { console.log(varname);
+          return function (e) {
+            for (var i = 0; i < data.length; i++) {
+              var o = data[i];
+              var f = foci[o[varname]];
+              o.y += (f.y - o.y) * e.alpha;
+              o.x += (f.x - o.x) * e.alpha;
+            }
+            nodes
+              .each(collide(.1))
+              .attr("cx", function (d) { return d.x; })
+              .attr("cy", function (d) { return d.y; });
+          }
+        }
+
+        function labels (foci) {
+          svg.selectAll(".label").remove();
+
+          svg.selectAll(".label")
+          .data(_.toArray(foci)).enter().append("text")
+          .attr("class", "label")
+          .text(function (d) { return d.name })
+          .attr("transform", function (d) {
+            return "translate(" + (d.x - ((d.name.length)*3)) + ", " + (d.y - 275) + ")";
+          });
+        }
+
+        function removePopovers () {
+          $('.popover').each(function() {
+            $(this).remove();
+          }); 
+        }
+
+        function showPopover (d) {
+          $(this).popover({
+            placement: 'auto top',
+            container: 'body',
+            trigger: 'manual',
+            html : true,
+            content: function() {
+              return "Observation: " + d.observation_type + "<br/>Number Observed: " + d3.format(",")(+d.num_observed) + 
+                     "<br/>Survey Area: " + d.survey_area +
+                     "<br/>In or Out National Park: " + d.in_out; }
+          });
+          $(this).popover('show')
+        }
+
+        function collide(alpha) {
+          var quadtree = d3.geom.quadtree(data);
+          return function(d) {
+            var r = d.radius + maxRadius + padding,
+                nx1 = d.x - r,
+                nx2 = d.x + r,
+                ny1 = d.y - r,
+                ny2 = d.y + r;
+            quadtree.visit(function(quad, x1, y1, x2, y2) {
+              if (quad.point && (quad.point !== d)) {
+                var x = d.x - quad.point.x,
+                    y = d.y - quad.point.y,
+                    l = Math.sqrt(x * x + y * y),
+                    r = d.radius + quad.point.radius + padding;
+                if (l < r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  quad.point.x += x;
+                  quad.point.y += y;
+                }
+              }
+              return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+          };
+        }
+      });
 
     zam_graph = true;
     graphs_up = true;
