@@ -1,0 +1,192 @@
+observation_type,id,iono,num_observed,group,survey_area,color
+Buffalo,16,"New Visions for Public Schools, Inc",67,low,Kafue,blue
+Buffalo,17,School District of Philadelphia,34,low,Kafue,blue
+Buffalo,18,Hamilton County Department of Education,56,low,Kafue,blue
+Buffalo,20,Achieve Minneapolis,34,low,Kafue,blue
+Buffalo,21,The College-Ready Promise,34,low,Kafue,blue
+Buffalo,23,New York City Center for Charter School Excellence,45,low,Kafue,blue
+Buffalo,25,City of New Haven,56,low,Kafue,blue
+Buffalo,43,Tiger Woods Foundation Inc.,23,medium,Kafue,blue
+Buffalo,44,"Public Agenda Foundation, Inc.",234,medium,Kafue,blue
+Buffalo,45,Rensselaer Polytechnic Institute,24,medium,Kafue,blue
+Buffalo,46,National Commission on Teachings & America's Future,1221,medium,Kafue,blue
+Buffalo,50,New Schools Fund dba NewSchools Venture Fund,34,medium,Kafue,blue
+Buffalo,51,New Schools Fund dba NewSchools Venture Fund,5,medium,Kafue,blue
+Buffalo,52,Texas Charter Schools Association,676,medium,Kafue,blue
+Buffalo,53,American Federation Of Teachers Educational Foundation,645,medium,Kafue,blue
+Buffalo,54,National Center For Educational Achievement,433,medium,Kafue,blue
+Buffalo,56,DC Public Education Fund,34,medium,Kafue,blue
+Buffalo,57,Grantmakers for Education,232,medium,Kafue,blue
+Buffalo,59,Silicon Valley Community Foundation,89,medium,Kafue,blue
+Buffalo,61,Arkansas Department of Education,67,medium,Kafue,blue
+Buffalo,62,Florida Department of Education,34,medium,Kafue,blue
+Buffalo,63,Georgia Department of Education,56,medium,Kafue,blue
+Buffalo,64,Louisiana Department of Education,12,medium,Kafue,blue
+Buffalo,65,Ohio Department of Education,34,medium,Kafue,blue
+Buffalo,66,California Polytechnic State University Foundation,34,medium,Kafue,blue
+Buffalo,168,University of Texas at Austin,676,high,Kafue,blue
+Buffalo,170,Council of Chief State School Officers,433,high,Kafue,blue
+Buffalo,173,National Center for the Improvement of Educational Assessment Inc.,232,high,Kafue,blue
+Buffalo,174,College Summit Inc,233,high,Kafue,blue
+Buffalo,175,Charlotte-Mecklenburg Schools,89,high,Kafue,blue
+Buffalo,176,"ACT, Inc.",45,high,Kafue,blue
+Buffalo,177,Partnership for Learning,67,high,Kafue,blue
+Buffalo,179,League of Education Voters Foundation,56,high,Kafue,blue
+Buffalo,180,National Center on Education & the Economy,12,high,Kafue,blue
+Buffalo,181,Educational Testing Service,34,high,Kafue,blue
+Buffalo,183,The Urban Teacher Residency Institute,3,high,Kafue,blue
+Buffalo,185,"Teach for America, Inc.",897,high,Kafue,blue
+Buffalo,188,"Rockefeller Philanthropy Advisors, Inc.",23,high,Kafue,blue
+Buffalo,219,New Venture Fund,24,high,Kafue,blue
+Buffalo,220,The Big Picture Company,45,high,Kafue,blue
+Buffalo,19,Internationals Network For Public Schools Inc,12,low,Kidepo,blue
+Buffalo,24,"SEED Foundation, Inc.",897,low,Kidepo,blue
+Buffalo,47,President and Fellows of Harvard College,323,medium,Kidepo,blue
+Buffalo,67,Tennessee State Collaborative on Reforming Education,3,medium,Kidepo,blue
+Buffalo,172,Dallas Independent School District,34,high,Kidepo,blue
+Buffalo,178,Tulsa Public Schools,34,high,Kidepo,blue
+Buffalo,22,Texas Public Education Reform Foundation,3,low,Luangwa,blue
+Buffalo,42,DC VOICE,34,medium,Luangwa,blue
+Buffalo,48,Illinois State Board of Education,2343,medium,Luangwa,blue
+Buffalo,49,Rensselaer Polytechnic Institute,34,medium,Luangwa,blue
+Buffalo,55,Military Child Education Coalition,789,medium,Luangwa,blue
+Buffalo,58,Envision Schools,233,medium,Luangwa,blue
+Buffalo,60,"ACT, Inc.",45,medium,Luangwa,blue
+Buffalo,68,Twenty First Century Foundation,45,medium,Luangwa,blue
+Buffalo,167,Fund for Educational Excellence,5,high,Luangwa,blue
+Buffalo,169,"Rockefeller Philanthropy Advisors, Inc.",645,high,Luangwa,blue
+Buffalo,171,College Summit Inc.,789,high,Luangwa,blue
+Buffalo,182,Pacific Institute For Community Organizations,34,high,Luangwa,blue
+Buffalo,184,Advance Illinois,45,high,Luangwa,blue
+Buffalo,186,New Schools Fund dba NewSchools Venture Fund,56,high,Luangwa,blue
+Buffalo,187,University of Chicago - Urban Education Institute,34,high,Luangwa,blue
+Buffalo,218,"Third Sector New England, Inc.",234,high,Luangwa,blue
+Hartebeest,70,National Council of La Raza,56,medium,Kafue,green
+Hartebeest,72,"University System of Georgia Foundation, Inc.",23,medium,Kafue,green
+Hartebeest,73,Common Core Inc.,234,medium,Kafue,green
+Hartebeest,75,Pittsburgh Public Schools,1221,medium,Kafue,green
+Hartebeest,76,The NEA Foundation for the Improvement of Education,323,medium,Kafue,green
+Hartebeest,79,"Leadership Conference on Civil Rights Education Fund, Inc.",34,medium,Kafue,green
+Hartebeest,80,Florida Department of Education,5,medium,Kafue,green
+Hartebeest,81,Thomas B. Fordham Institute,676,medium,Kafue,green
+Hartebeest,83,Mexican American Legal Defense and Educational Fund,433,medium,Kafue,green
+Hartebeest,84,"L.U.L.A.C. Institute, Inc.",789,medium,Kafue,green
+Hartebeest,85,National Summer Learning Association,34,medium,Kafue,green
+Hartebeest,86,"Teachers College, Columbia University",232,medium,Kafue,green
+Hartebeest,87,Communities Foundation of Texas,233,medium,Kafue,green
+Hartebeest,88,Business Higher Education Forum,89,medium,Kafue,green
+Hartebeest,90,Southeast Asia Resource Action Center,67,medium,Kafue,green
+Hartebeest,91,Roads to Success Inc.,34,medium,Kafue,green
+Hartebeest,92,MCNC,56,medium,Kafue,green
+Hartebeest,94,National Association of State Boards of Education,34,medium,Kafue,green
+Hartebeest,95,Pollinate Ventures,34,medium,Kafue,green
+Hartebeest,96,Fund for Public Schools Inc.,3,medium,Kafue,green
+Hartebeest,97,KIPP Foundation,45,medium,Kafue,green
+Hartebeest,98,Mathematica Policy Research,897,medium,Kafue,green
+Hartebeest,102,New Teacher Center,234,medium,Kafue,green
+Hartebeest,108,Social Science Research Council,34,medium,Kafue,green
+Hartebeest,109,National Alliance For Public Charter Schools,5,medium,Kafue,green
+Hartebeest,110,Nellie Mae Education Foundation,676,medium,Kafue,green
+Hartebeest,112,"Teach for America, Inc.",433,medium,Kafue,green
+Hartebeest,114,National Indian Education Association,34,medium,Kafue,green
+Hartebeest,221,"Rockefeller Philanthropy Advisors, Inc.",90,high,Kafue,green
+Hartebeest,224,Regents Of The University Of California At Berkeley,345,high,Kafue,green
+Hartebeest,227,The Aspen Institute,56,high,Kafue,green
+Hartebeest,232,United Way of America,45,high,Kafue,green
+Hartebeest,233,"Teach Plus, Incorporated",67,high,Kafue,green
+Hartebeest,253,The College-Ready Promise,90,high,Kafue,green
+Hartebeest,254,Memphis City Schools,98,high,Kafue,green
+Hartebeest,255,Hillsborough County Public Schools,500,high,Kafue,green
+Hartebeest,82,Council of State Governments,645,medium,Kidepo,green
+Hartebeest,100,Guaranteach,34,medium,Kidepo,green
+Hartebeest,69,Alliance for Education,897,medium,Luangwa,green
+Hartebeest,71,American Institutes for Research,34,medium,Luangwa,green
+Hartebeest,74,National Council for the Social Studies,24,medium,Luangwa,green
+Hartebeest,77,"L.U.L.A.C. Institute, Inc.",2343,medium,Luangwa,green
+Hartebeest,78,"University of California, Los Angeles",34,medium,Luangwa,green
+Hartebeest,89,National Staff Development Council,45,medium,Luangwa,green
+Hartebeest,93,Regents of the University of California at Berkeley,12,medium,Luangwa,green
+Hartebeest,99,MCNC,56,medium,Luangwa,green
+Hartebeest,101,"Strive: Cincinnati/Northern Kentucky, LLC",23,medium,Luangwa,green
+Hartebeest,103,New Technology Foundation,24,medium,Luangwa,green
+Hartebeest,104,"University of California, Los Angeles",1221,medium,Luangwa,green
+Hartebeest,105,National Conference of State Legislatures,323,medium,Luangwa,green
+Hartebeest,106,Gateway to College National Network,2343,medium,Luangwa,green
+Hartebeest,107,Ohio Business Alliance for Higher Education and the Economy,34,medium,Luangwa,green
+Hartebeest,111,Seattle Biomedical Research Institute,645,medium,Luangwa,green
+Hartebeest,113,"Fund for the City of New York, Inc.",789,medium,Luangwa,green
+Hartebeest,115,Center on Education Policy,232,medium,Luangwa,green
+Hartebeest,116,Texas Valley Communities Foundation,233,medium,Luangwa,green
+Hartebeest,117,President and Fellows of Harvard College,89,medium,Luangwa,green
+Hartebeest,222,Idea Academy Inc,76,high,Luangwa,green
+Hartebeest,223,College Summit Inc,45,high,Luangwa,green
+Hartebeest,225,Council Of The Great City Schools,23,high,Luangwa,green
+Hartebeest,226,Dallas Independent School District,34,high,Luangwa,green
+Hartebeest,228,New Schools Fund dba NewSchools Venture Fund,67,high,Luangwa,green
+Hartebeest,229,New Schools Fund dba NewSchools Venture Fund,56,high,Luangwa,green
+Hartebeest,230,"Newark Charter School Fund, Inc.",345,high,Luangwa,green
+Hartebeest,231,"SeaChange Capital Partners, Inc.",324,high,Luangwa,green
+Human Presence,2,Trustees of Dartmouth College,323,low,Kafue,red
+Human Presence,3,Denver School of Science and Technology Inc.,2343,low,Kafue,red
+Human Presence,5,New Schools for New Orleans,34,low,Kafue,red
+Human Presence,6,Battelle For Kids,5,low,Kafue,red
+Human Presence,7,FSG Social Impact Advisors,676,low,Kafue,red
+Human Presence,8,Aspire Public Schools,645,low,Kafue,red
+Human Presence,9,Educational Policy Improvement Center,433,low,Kafue,red
+Human Presence,10,E3 Alliance,789,low,Kafue,red
+Human Presence,11,"Hillsborough Education Foundation, Inc.",34,low,Kafue,red
+Human Presence,12,The College-Ready Promise,232,low,Kafue,red
+Human Presence,13,Memphis City Schools Foundation,233,low,Kafue,red
+Human Presence,14,Pittsburgh Public Schools,89,low,Kafue,red
+Human Presence,15,Greater Houston Community Foundation,45,low,Kafue,red
+Human Presence,118,"Alliance for Excellent Education, Inc.",45,medium,Kafue,red
+Human Presence,119,Regents University Of California Los Angeles,67,medium,Kafue,red
+Human Presence,121,Committee for Economic Development,56,medium,Kafue,red
+Human Presence,122,Prichard Committee for Academic Excellence,12,medium,Kafue,red
+Human Presence,126,Partnership for Learning,45,medium,Kafue,red
+Human Presence,127,Hope Street Group,897,medium,Kafue,red
+Human Presence,128,Institute for a Competitive Workforce,56,medium,Kafue,red
+Human Presence,129,Educational Policy Improvement Center,34,medium,Kafue,red
+Human Presence,132,Tides Center,24,medium,Kafue,red
+Human Presence,134,National School Boards Foundation,323,medium,Kafue,red
+Human Presence,136,National Urban League Inc.,34,medium,Kafue,red
+Human Presence,138,Denver Public Schools,5,medium,Kafue,red
+Human Presence,140,National Council of La Raza,645,medium,Kafue,red
+Human Presence,141,Friendship Public Charter School,433,medium,Kafue,red
+Human Presence,142,Local Initiatives Support Corporation,789,medium,Kafue,red
+Human Presence,143,Thomas B. Fordham Institute,34,medium,Kafue,red
+Human Presence,145,Baton Rouge Area Foundation,233,medium,Kafue,red
+Human Presence,146,University of Washington,89,medium,Kafue,red
+Human Presence,147,Achievement First Inc.,45,medium,Kafue,red
+Human Presence,148,American Federation Of Teachers Educational Foundation,67,medium,Kafue,red
+Human Presence,149,President and Fellows of Harvard College,34,medium,Kafue,red
+Human Presence,152,Ohio Grantmakers Forum,34,medium,Kafue,red
+Human Presence,154,"Teach for America, Inc.",3,medium,Kafue,red
+Human Presence,155,United Way Inc.,45,high,Kafue,red
+Human Presence,156,Public Education Network,897,high,Kafue,red
+Human Presence,157,Recovery School District,56,high,Kafue,red
+Human Presence,158,Center on Education Policy,34,high,Kafue,red
+Human Presence,160,Houston Independent School District,234,high,Kafue,red
+Human Presence,166,"Education Development Center, Inc.",34,high,Kafue,red
+Human Presence,1,New Mexico Business Roundtable for Educational Excellence,1221,low,Kidepo,red
+Human Presence,4,The NEA Foundation for the Improvement of Education,34,low,Kidepo,red
+Human Presence,144,NCB Capital Impact,232,medium,Kidepo,red
+Human Presence,151,The Education Trust,12,medium,Kidepo,red
+Human Presence,120,Innosight Institute Inc,34,medium,Luangwa,red
+Human Presence,123,National Association of State Boards of Education,34,medium,Luangwa,red
+Human Presence,124,National Center For Educational Achievement,34,medium,Luangwa,red
+Human Presence,125,National Council of La Raza,3,medium,Luangwa,red
+Human Presence,130,Target Area Development Corporation,23,medium,Luangwa,red
+Human Presence,131,National Association of Street Schools,234,medium,Luangwa,red
+Human Presence,133,The Schott Foundation For Public Education,1221,medium,Luangwa,red
+Human Presence,135,National Student Clearinghouse,2343,medium,Luangwa,red
+Human Presence,137,The Washington State Board of Education,34,medium,Luangwa,red
+Human Presence,139,Business Higher Education Forum,676,medium,Luangwa,red
+Human Presence,150,Team Pennsylvania Foundation,56,medium,Luangwa,red
+Human Presence,153,University of Wisconsin,34,medium,Luangwa,red
+Human Presence,159,College Success Foundation,23,high,Luangwa,red
+Human Presence,161,Ohio Department of Education,24,high,Luangwa,red
+Human Presence,162,Seattle Foundation,1221,high,Luangwa,red
+Human Presence,163,Center for American Progress,323,high,Luangwa,red
+Human Presence,164,EdVisions Inc,2343,high,Luangwa,red
+Human Presence,165,College for All Texans Foundation: Closing the Gaps,34,high,Luangwa,red
