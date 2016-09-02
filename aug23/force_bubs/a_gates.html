@@ -42,7 +42,7 @@
       <label class="btn btn-default active" id="all">
         <input type="radio" name="options"> Observation Totals
       </label>
-      <label class="btn btn-default" id="start_year">
+      <label class="btn btn-default" id="survey_area">
         <input type="radio" name="options"> Observations By Survey Area
       </label>
     </div>
@@ -52,7 +52,7 @@
     <script src="lib/bootstrap.js"></script>
     <script src="lib/underscore.js"></script>
     <script>
-      d3.csv('data/gates.csv', function (error, data) {
+      d3.csv('data/a_gates.csv', function (error, data) {
 
         var width = 1000, height = 1000;
         var fill = d3.scale.ordinal()
@@ -63,11 +63,11 @@
             .attr("width", width)
             .attr("height", height);
 
-        var max_amount = d3.max(data, function (d) { return parseInt(d.total_amount)})
+        var max_amount = d3.max(data, function (d) { return parseInt(d.num_observed)})
         var radius_scale = d3.scale.pow().exponent(0.5).domain([0, max_amount]).range([2, 85])
 
         _.each(data, function (elem) {
-          elem.radius = radius_scale(elem.total_amount)*.8;
+          elem.radius = radius_scale(elem.num_observed)*.8;
           elem.all = 'all';
           elem.x = _.random(0, width);
           elem.y = _.random(0, height);
@@ -77,9 +77,9 @@
         var maxRadius = d3.max(_.pluck(data, 'radius'));
 
         var year_centers = {
-          "2008": {name:"Luangwa", x: 150, y: 300},
-          "2009": {name:"Kafue", x: 550, y: 300},
-          "2010": {name:"Kidepo", x: 900, y: 300}
+          "Luangwa": {name:"Luangwa", x: 150, y: 300},
+          "Kafue": {name:"Kafue", x: 550, y: 300},
+          "Kidepo": {name:"Kidepo", x: 900, y: 300}
         }
 
         var all_center = { "all": {name:"Observation Totals", x: 500, y: 300}};
@@ -114,7 +114,7 @@
           force.start();
         }
 
-        function tick (foci, varname) {
+        function tick (foci, varname) { console.log(varname);
           return function (e) {
             for (var i = 0; i < data.length; i++) {
               var o = data[i];
@@ -153,9 +153,9 @@
             container: 'body',
             trigger: 'manual',
             html : true,
-            content: function() { 
-              return "Title: " + d.grant_title + "<br/>Amount: $" + d3.format(",")(+d.total_amount) + 
-                     "<br/>Year: " + d.start_year; }
+            content: function() {
+              return "Observation: " + d.observation_type + "<br/>Number Observed: $" + d3.format(",")(+d.num_observed) + 
+                     "<br/>Survey Area: " + d.survey_area; }
           });
           $(this).popover('show')
         }
